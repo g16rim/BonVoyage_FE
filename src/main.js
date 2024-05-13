@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { useKakao } from 'vue3-kakao-maps'
 const { VITE_KAKAO_API_SERVICE_KEY } = import.meta.env
-useKakao('ca86fba374178c1214e8509fb1da9617')
+useKakao(VITE_KAKAO_API_SERVICE_KEY)
 
 const app = createApp(App)
 
