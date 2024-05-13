@@ -1,11 +1,9 @@
 <script setup>
-
+import SwiperComponent from "@/components/common/VSwiper.vue"
 </script>
 
 <template>
-  <div>
-
-  </div>
+  <SwiperComponent/>
 </template>
 
 <style scoped></style>
