@@ -4,6 +4,8 @@ import LoginView from "@/views/LoginView.vue"
 import TripView from "@/views/TripView.vue"
 import LeftTime from "@/components/common/VLeftTime.vue"
 import SearchBar from "@/components/common/Vsearch.vue"
+import MapView from "@/views/MapView.vue"
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -32,6 +34,11 @@ const router = createRouter({
       name: 'search',
       component: SearchBar
     },
+    {
+      path: '/map',
+      name: 'map',
+      component: MapView
+    }
   ]
 })
 

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import VCard from "@/components/common/VCard.vue"
+import VMap from "@/components/map/VMap.vue"
 
 const { VITE_OPEN_API_SERVICE_KEY, VITE_SEARCH_SITE_URL } = import.meta.env
 
@@ -29,7 +30,7 @@ const searchSite = () => {
 
 <template>
     <div>
-        <select class="form-select" aria-label="Default select example">
+        <!-- <select class="form-select" aria-label="Default select example">
             <option selected>Open this select menu</option>
             <option value="1">One</option>
             <option value="2">Two</option>
@@ -40,7 +41,7 @@ const searchSite = () => {
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
-        </select>
+        </select> -->
         <form class="d-flex mx-auto mb-2 mb-lg-0" role="search">
             <input class="form-control me-2" type="search" placeholder="떠나요" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">ok</button>
@@ -66,6 +67,7 @@ const searchSite = () => {
                 <VCard v-for="site in sites" :key="site.contentId" :site=site />
             </div>
         </div>
+        <VMap />
     </div>
 </template>
 
