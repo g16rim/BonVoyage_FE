@@ -6,7 +6,7 @@ import BestReviewComponent from "@/components/layout/BestReview.vue"
 <template>
   <div id="main">
 
-    <div id="topMain">
+    <div class="luckiest-guy-regular" id="topMain">
       <SwiperComponent/>
     </div>
     <div id="bottomMain">
@@ -26,6 +26,9 @@ import BestReviewComponent from "@/components/layout/BestReview.vue"
   }
   #topMain {
     flex: 1; /* 남은 공간을 모두 차지 */
+    background-color: #32a852;
+    width: 100%;
+    font-size: 1000px;
   }
   #bottomMain {
     flex: 0

@@ -1,6 +1,6 @@
-<template>
+<template> 
     <section class="bg-white py-8">
-        <div id="small-title">
+        <div class="luckiest-guy-regular" id="small-title">
             <a class="bestReview" href="#">Best Review</a>
         </div>
         <div class="container mx-auto flex flex-wrap justify-center">
@@ -39,7 +39,7 @@ const products = [
 
 <style scoped>
 .bestReview{
-    font-family: 'Work Sans', sans-serif;
+
     font-size: 20px;
     font-weight: 550;
     color: black;
