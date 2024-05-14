@@ -1,5 +1,21 @@
 <script setup>
+    import { useSidebarStore } from '@/stores/sidebar';
+import { watch } from 'vue';
+    import Sidebar from "@/components/layout/SideBar.vue";
 
+    const sidebarStore = useSidebarStore();
+
+    // watch(sidebarStore.visible, (newValue, oldValue) => {
+    //     if (newValue) {
+            
+    //     }
+    // });
+
+    
+    watch(() => sidebarStore.visible, (isVisible) => {
+        // console.log('Sidebar visibility changed:', isVisible);
+    // 여기에서 사이드바 상태에 따라 필요한 동작을 수행
+    });
 </script>
 
 <template>
@@ -9,12 +25,21 @@
             <img class="logo1" src="/src/assets/logo/logo1.png" alt="" srcset="">
             <a class="navbar-brand luckiest-guy-regular"  href="#" style="padding-left: 50px;">BUBBLE <br>TRIP</a>
             
-            <div class="bubble-container">
-                <img class="bubble" src="/src/assets/logo/bubble.png" alt="" srcset="">
-                <div class="blink">
-                    <p class="pop luckiest-guy-regular">POP!</p>
+            <button @click="sidebarStore.toggle">
+                <div class="bubble-container">
+                    <img class="bubble" src="/src/assets/logo/bubble.png" alt="" srcset="">
+                    <div class="blink">
+                        <p class="pop luckiest-guy-regular">POP!</p>
+                    </div>
                 </div>
-            </div>
+
+            </button>
+            <!-- <button @click="sidebarStore.toggle">Toggle Sidebar</button> -->
+<!-- 
+            <div v-show="sidebarStore.visible">
+                <Sidebar />
+            </div> -->
+
 
             <!-- <img class="bubble" src="/src/assets/logo/bubble.png" alt="" srcset="">
             <div class="blink" ><p class="pop  luckiest-guy-regular">POP!</p></div>

@@ -28,7 +28,7 @@ import BestReviewComponent from "@/components/layout/BestReview.vue"
     flex: 1; /* 남은 공간을 모두 차지 */
     background-color: #32a852;
     width: 100%;
-    font-size: 1000px;
+    font-size: 300px;
   }
   #bottomMain {
     flex: 0
