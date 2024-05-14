@@ -5,6 +5,8 @@ import TripView from "@/views/TripView.vue"
 import LeftTime from "@/components/common/VLeftTime.vue"
 import SearchBar from "@/components/common/Vsearch.vue"
 import MapView from "@/views/MapView.vue"
+import MenuBar from "@/components/plan/MenuSlide.vue"
+import ListFriendView from "@/components/group/ListFriend.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +35,15 @@ const router = createRouter({
       path: '/search',
       name: 'search',
       component: SearchBar
+    }, {
+      path: '/menu',
+      name: 'menu',
+      component: MenuBar
+    },
+    {
+      path: '/list',
+      name: 'list',
+      component: ListFriendView
     },
     {
       path: '/map',

@@ -1,9 +1,33 @@
 <script setup>
 import SwiperComponent from "@/components/common/VSwiper.vue"
+import BestReviewComponent from "@/components/layout/BestReview.vue"
 </script>
 
 <template>
-  <SwiperComponent/>
+  <div id="main">
+
+    <div id="topMain">
+      <SwiperComponent/>
+    </div>
+    <div id="bottomMain">
+      <BestReviewComponent/>
+    </div>
+
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+  #main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 위에서 아래로 정렬 */
+    align-items: stretch; /* 가로 너비에 맞게 확장 */
+    height: 100%; /* 전체 높이로 설정 */
+  }
+  #topMain {
+    flex: 1; /* 남은 공간을 모두 차지 */
+  }
+  #bottomMain {
+    flex: 0
+  }
+</style>
