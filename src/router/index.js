@@ -4,7 +4,6 @@ import LoginView from "@/views/LoginView.vue"
 import TripView from "@/views/TripView.vue"
 import LeftTime from "@/components/common/VLeftTime.vue"
 import SearchBar from "@/components/common/Vsearch.vue"
-import MapView from "@/views/MapView.vue"
 import MenuBar from "@/components/plan/MenuSlide.vue"
 import ListFriendView from "@/components/group/ListFriend.vue"
 
@@ -46,9 +45,21 @@ const router = createRouter({
       component: ListFriendView
     },
     {
-      path: '/map',
-      name: 'map',
-      component: MapView
+      path: '/plan',
+      name: 'plan',
+      component: () => import ("@/views/PlanView.vue"),
+      children: [
+        {
+          path: "create",
+          name: "plan-create",
+          component: () => import("@/components/plan/PlanCreate.vue"),
+        },
+        {
+          path: "view/:planId",
+          name: "plan-view",
+          component: () => import("@/components/plan/PlanDetail.vue"),
+        },
+      ]
     }
   ]
 })
