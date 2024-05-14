@@ -1,4 +1,5 @@
 <template>
+    <div class="container mx-auto flex flex-wrap justify-center">
   <div class="top-banner">
     <div class="wrap">
       <swiper
@@ -20,10 +21,11 @@
       </swiper>
     </div>
   </div>
+</div>
 </template>
   
 <script>
-  import {ref} from 'vue'
+
   import { Swiper, SwiperSlide } from 'swiper/vue'
   import 'swiper/css'
   import 'swiper/css/navigation'
@@ -48,10 +50,15 @@
         modules: [Navigation, Autoplay]
       }
     }
-  }
+}
+
+import 'tailwindcss/tailwind.css';
+
 </script>
   
  <style lang="scss">
+
+
 .top-banner {
   width: 100%;
   height: 10%;
