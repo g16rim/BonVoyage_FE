@@ -59,6 +59,16 @@ const router = createRouter({
           name: "plan-view",
           component: () => import("@/components/plan/PlanDetail.vue"),
         },
+        {
+          path: "modify/:planId",
+          name: "plan-modify",
+          component: () => import("@/components/plan/PlanModify.vue"),
+        },
+        {
+          path: "list",
+          name: "plan-list",
+          component: () => import("@/components/plan/PlanList.vue"),
+        }
       ]
     }
   ]

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker' // Vue3 date picker 라이브러리 사용
 import { getPlan, createPlan, updatePlan } from "@/api/plan.js"
@@ -18,26 +18,25 @@ const plan = ref({
   planTitle: ''
 });
 
-const customFormatter = date => {
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-  return `${year}-${month}-${day}`;
-};
-
-if (props.type === 'update') {
+onMounted(() => {
+  if (props.type === 'update') {
     let { planId } = route.params
     console.log(planId + " 수정")
     getPlan(
         planId,
         ({ data }) => {
-            plan.value = data
+          plan.value = {
+            ...data,
+            startDate: new Date(data.startDate),
+            endDate: new Date(data.endDate)
+          }
         },
         (error) => {
             console.log(error)
         }
     )
-}
+  }
+})
 
 function onSubmit() {
     props.type === "create" ? registPlan() : modifyPlan()
@@ -45,7 +44,7 @@ function onSubmit() {
 
 function registPlan() {
     createPlan(
-        1, // groupId
+        1, // TODO groupId
         plan.value,
         (response) => {
             let msg = "계획 등록 시 문제 발생했습니다."
@@ -73,7 +72,7 @@ function modifyPlan() {
 }
 
 function moveList() {
-    // router.push({ name: "plan-list" })
+    router.push({ name: "plan-list" })
 }
 
 </script>
@@ -86,11 +85,11 @@ function moveList() {
     </div>
     <div class="mb-3">
       <label for="startDate" class="form-label">시작 날짜 : </label>
-      <Datepicker v-model="plan.startDate" :inline="true" :format="customFormatter" />
+      <Datepicker v-model="plan.startDate" :inline="true" format="yyyy-MM-dd" />
     </div>
     <div class="mb-3">
       <label for="endDate" class="form-label">종료 날짜 : </label>
-      <Datepicker v-model="plan.endDate" :inline="true" :format="customFormatter" />
+      <Datepicker v-model="plan.endDate" :inline="true" format="yyyy-MM-dd" />
     </div>
     <div class="mb-3">
       <label for="budget" class="form-label">예산 : </label>
