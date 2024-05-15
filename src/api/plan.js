@@ -2,8 +2,8 @@ import { localAxios } from "@/util/http-commons"
 
 const local = localAxios()
 
-function listPlan(param, success, fail) {
-    local.get(`/plan`, { params: param }).then(success).catch(fail)
+function listPlan(success, fail) {
+    local.get(`/plan/list`, { }).then(success).catch(fail)
 }
 
 function createPlan(groupId, plan, success, fail) {
