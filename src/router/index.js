@@ -6,6 +6,7 @@ import LeftTime from "@/components/common/VLeftTime.vue"
 import SearchBar from "@/components/common/Vsearch.vue"
 import MenuBar from "@/components/plan/MenuSlide.vue"
 import ListFriendView from "@/components/group/ListFriend.vue"
+import MyPageView from "@/views/MyPageView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +44,11 @@ const router = createRouter({
       path: '/list',
       name: 'list',
       component: ListFriendView
+    },
+    {
+      path: '/mypage',
+      name: 'mypage',
+      component: MyPageView
     },
     {
       path: '/plan',
