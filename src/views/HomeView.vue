@@ -1,6 +1,15 @@
 <script setup>
 import SwiperComponent from "@/components/common/VSwiper.vue"
 import BestReviewComponent from "@/components/layout/BestReview.vue"
+import { useMemberStore } from '@/stores/member'
+import { storeToRefs } from "pinia"
+
+const authStore = useMemberStore()
+
+// 로그인 상태 확인
+const { isLogin, isLoginError } = storeToRefs(authStore)
+const { userLogin, getUserInfo } = authStore
+console.log("로그인 상태", isLogin.value)
 </script>
 
 <template>

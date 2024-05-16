@@ -1,37 +1,32 @@
 <script setup>
-import axios from 'axios'
-import { ref } from "vue"
+import { ref } from 'vue';
+import { useMemberStore } from '@/stores/member'
+import { storeToRefs } from "pinia"
 import { useRouter } from "vue-router"
 
-// 데이터 관리를 위해 ref로 변수 선언
-const email = ref(''); // 이메일을 저장할 변수
-const password = ref(''); // 패스워드를 저장할 변수
-const { VITE_BASE_URL } = import.meta.env
-const router = useRouter()
+    const authStore = useMemberStore()
+    const router = useRouter()
 
-// 폼 제출 시 실행될 메서드
-const handleSubmit = () => {
-  // 입력된 이메일과 패스워드를 가져옴
-    const userEmail = email.value;
-    const userPassword = password.value;
-    console.log(VITE_BASE_URL)
+        // 로그인 상태 확인
+    const { isLogin, isLoginError } = storeToRefs(authStore)
+    const { userLogin, getUserInfo } = authStore
+    console.log("로그인 상태", isLogin.value)
 
-    // 이메일과 비밀번호를 서버로 전송하는 POST 요청
-    axios.post(`${VITE_BASE_URL}/api/auth/signin`,{ email: userEmail, password: userPassword })
-        .then(response => {
-        console.log('로그인 성공:', response.data);
-            // 로그인 성공 후 추가 작업 수행
-        router.push({name: 'home'})
-        })
-        .catch(error => {
-        console.error('로그인 실패:', error);
-        // 로그인 실패 시 에러 처리
-        });
+        
+    const loginUser = ref({
+    userId: "",
+    userPwd: "",
+    })
 
-    // 폼 제출 후 입력 값 초기화 (선택적)
-    email.value = '';
-    password.value = '';
-}
+    const login = async () => {
+        await userLogin(loginUser.value)
+
+        let token = sessionStorage.getItem("accessToken")
+        if (isLogin.value) {
+            getUserInfo(token)
+            router.replace("/")
+        }
+    }
 </script>
 
 <template>
@@ -47,12 +42,12 @@ const handleSubmit = () => {
                                 <div class="loginHeader">로그인</div>
                                 <br>
                                 <div data-mdb-input-init class="form-outline mb-4">
-                                <input type="email" v-model="email" id="typeEmailX-2" class="form-control form-control-lg" placeholder="Email을 입력해주세요"/>
+                                <input type="email" v-model="loginUser.userId" id="typeEmailX-2" class="form-control form-control-lg" placeholder="Email을 입력해주세요"/>
                                 <!-- <label class="form-label" for="typeEmailX-2"></label> -->
                                 </div>
 
                                 <div data-mdb-input-init class="form-outline mb-4">
-                                <input type="password" v-model="password" id="typePasswordX-2" class="form-control form-control-lg" placeholder="Password를 입력해주세요"/>
+                                <input type="password" v-model="loginUser.userPwd" id="typePasswordX-2" class="form-control form-control-lg" placeholder="Password를 입력해주세요"/>
                                 <!-- <label class="form-label" for="typePasswordX-2"></label> -->
                                 </div>
 
@@ -62,7 +57,7 @@ const handleSubmit = () => {
                                 <label class="form-check-label" for="form1Example3"> Email 기억하기 </label>
                                 </div>
 
-                                <button @click="handleSubmit" type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block"  style="background-color: gray;">Login</button>
+                                <button @click="login" type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block"  style="background-color: gray;">Login</button>
 
                                 <hr class="my-4">
 

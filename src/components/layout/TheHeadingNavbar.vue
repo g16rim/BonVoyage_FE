@@ -1,8 +1,17 @@
 <script setup>
     import { useSidebarStore } from '@/stores/sidebar';
-import { watch } from 'vue';
+    import { watch } from 'vue';
+    import { useMemberStore } from '@/stores/member'
     import Sidebar from "@/components/layout/SideBar.vue";
+    import { storeToRefs } from "pinia"
+    const authStore = useMemberStore()
 
+
+    // 로그인 상태 확인
+    const { isLogin, isLoginError } = storeToRefs(authStore)
+    const {  getUserInfo } = authStore
+    console.log("로그인 상태", isLogin.value)
+    console.log("유저상태"+ getUserInfo)
     const sidebarStore = useSidebarStore();
 
     // watch(sidebarStore.visible, (newValue, oldValue) => {
@@ -34,6 +43,12 @@ import { watch } from 'vue';
                 </div>
 
             </button>
+
+
+            <div v-if="isLogin.value">
+                
+                <p class="navbar-text" style="font-size: large;">{{ `OO님 안녕하세요, ${getUserInfo.userInfo.name}님` }}</p>
+            </div>
             <!-- <button @click="sidebarStore.toggle">Toggle Sidebar</button> -->
 <!-- 
             <div v-show="sidebarStore.visible">
