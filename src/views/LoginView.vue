@@ -22,6 +22,7 @@ import { useRouter } from "vue-router"
         await userLogin(loginUser.value)
 
         let token = sessionStorage.getItem("accessToken")
+
         if (isLogin.value) {
             getUserInfo(token)
             router.replace("/")

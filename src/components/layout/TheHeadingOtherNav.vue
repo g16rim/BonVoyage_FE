@@ -5,9 +5,8 @@
 
 
     // 로그인 상태 확인
-    const { isLogin, isLoginError } = storeToRefs(authStore)
-    const { userLogin, getUserInfo } = authStore
-    console.log("로그인 상태", isLogin.value)
+    const { isLogin, isLoginError, userInfo } = storeToRefs(authStore)
+    console.log("로그인 상태 222222", isLogin.value)
 </script>
 
 <template>
@@ -51,10 +50,10 @@
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <router-link :to="{ name: 'login' }" class="nav-link">로그인</router-link>
 
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>

@@ -9,7 +9,7 @@ const authStore = useMemberStore()
 // 로그인 상태 확인
 const { isLogin, isLoginError } = storeToRefs(authStore)
 const { userLogin, getUserInfo } = authStore
-console.log("로그인 상태", isLogin.value)
+
 </script>
 
 <template>

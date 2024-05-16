@@ -14,7 +14,6 @@ export const useMemberStore = defineStore("memberStore", () => {
   const isValidToken = ref(false)
 
   const userLogin = async (loginUser) => {
-
     await userConfirm(
       loginUser,
       (response) => {
@@ -46,7 +45,7 @@ export const useMemberStore = defineStore("memberStore", () => {
     let decodeToken = jwtDecode(token)
     console.log(decodeToken)
 
-    const userInfo = await findById(
+    userInfo.value = await findById(
       (response) => {
         if (response.status === httpStatusCode.OK) {
           console.log("response data" + response.data)
@@ -67,37 +66,9 @@ export const useMemberStore = defineStore("memberStore", () => {
         await tokenRegenerate()
       }
     )
-    console.log("member.js 정보 : ",userInfo);
+    console.log("member.js 정보 : ", userInfo.value);
+    
   }
-
-
-  // const getUserInfo = async (token) => {
-  //   let decodeToken = jwtDecode(token)
-  //   console.log(decodeToken)
-
-  //   const userInfo = await findById(
-  //     // (response) => {
-  //     //   if (response.status === httpStatusCode.OK) {
-  //     //     console.log("response data" + response.data)
-  //     //     userInfo.value = response.data.userInfo
-  //     //     console.log("유저정보다임마"+ userInfo.value)
-  //     //   } else {
-  //     //     console.log("유저 정보가 없습니다.")
-  //     //   }
-  //     // },
-  //     // async (error) => {
-  //     //   console.error(
-  //     //     "g[토큰 만료되어 사용 불가능.] : ",
-  //     //     error.response.status,
-  //     //     error.response.statusText
-  //     //   )
-  //     //   isValidToken.value = false
-
-  //     //   await tokenRegenerate()
-  //     // }
-  //   )
-  //   console.log("member.js 정보 : ",userInfo);
-  // }
 
 
   const tokenRegenerate = async () => {
@@ -143,6 +114,7 @@ export const useMemberStore = defineStore("memberStore", () => {
 
     await logout(
       (response) => {
+        
         if (response.status === httpStatusCode.OK) {
           isLogin.value = false
           userInfo.value = null
@@ -160,6 +132,7 @@ export const useMemberStore = defineStore("memberStore", () => {
           error.response.status,
           error.response.statusText
         )
+        
       }
     )
   }

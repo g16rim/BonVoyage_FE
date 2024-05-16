@@ -30,16 +30,20 @@ watch(() => route.path, (newPath) => {
 </script>
 
 <template>
-  <component :is="isHomeRoute ? TheHeadingNavbar : TheHeadingOtherNav" />
-  <RouterView />
+  <div id="app">
+    <component :is="isHomeRoute ? TheHeadingNavbar : TheHeadingOtherNav" />
+    <RouterView />
 
-  <div class="side" v-show="sidebarStore.visible">
-    <Sidebar />
+    <div class="side" v-show="sidebarStore.visible">
+      <Sidebar />
+    </div>
   </div>
-
 </template>
 
 <style scoped>
+#app{
+  width:100%
+}
 .side {
   position: fixed;
   z-index: 999;

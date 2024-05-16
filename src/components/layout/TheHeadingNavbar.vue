@@ -1,30 +1,27 @@
 <script setup>
     import { useSidebarStore } from '@/stores/sidebar';
-    import { watch } from 'vue';
+    import { watch,onMounted } from 'vue';
     import { useMemberStore } from '@/stores/member'
-    import Sidebar from "@/components/layout/SideBar.vue";
     import { storeToRefs } from "pinia"
     const authStore = useMemberStore()
-
-
-    // 로그인 상태 확인
-    const { isLogin, isLoginError } = storeToRefs(authStore)
-    const {  getUserInfo } = authStore
-    console.log("로그인 상태", isLogin.value)
-    console.log("유저상태"+ getUserInfo)
+    const { isLogin, userInfo } = storeToRefs(authStore)
+    onMounted(() => {
+        authStore.getUserInfo(sessionStorage.getItem("accessToken"))
+    })
+    console.log("로그인 상태2222", isLogin.value)
+    console.log("유저상태33333", userInfo)
     const sidebarStore = useSidebarStore();
-
-    // watch(sidebarStore.visible, (newValue, oldValue) => {
-    //     if (newValue) {
-            
-    //     }
-    // });
-
+    const { userLogout } = authStore;
     
     watch(() => sidebarStore.visible, (isVisible) => {
         // console.log('Sidebar visibility changed:', isVisible);
     // 여기에서 사이드바 상태에 따라 필요한 동작을 수행
     });
+
+    const logout = () => {
+        userLogout();
+
+    };
 </script>
 
 <template>
@@ -34,31 +31,35 @@
             <img class="logo1" src="/src/assets/logo/logo1.png" alt="" srcset="">
             <a class="navbar-brand luckiest-guy-regular"  href="#" style="padding-left: 50px;">BUBBLE <br>TRIP</a>
             
-            <button @click="sidebarStore.toggle">
+           
                 <div class="bubble-container">
-                    <img class="bubble" src="/src/assets/logo/bubble.png" alt="" srcset="">
-                    <div class="blink">
-                        <p class="pop luckiest-guy-regular">POP!</p>
+                    <button @click="sidebarStore.toggle">
+                        <img class="bubble" src="/src/assets/logo/bubble.png" alt="" srcset="">
+                        <div class="blink">
+                            <p class="pop luckiest-guy-regular">POP!</p>
+                        </div>
+                    </button>
+
+                    <div v-if="userInfo !== null">
+                        <p id="hello" class="navbar-text luckiest-guy-regular" style="font-size: large;">{{ `버블버블 안녕하세요,` }}</p>
+                        <p class="luckiest-guy-regular">{{ ` ${userInfo.grade.grade} ${userInfo.username}님 `}}</p>
+                         <li class="nav-item">
+                            <router-link  id="login-button" :to="{ name: 'login' }" class="nav-link">로그아웃</router-link>
+                        </li>
+                       
                     </div>
+                    <div v-else>
+                        <button class="nav-item">
+                            <router-link id="login-button" :to="{ name: 'login' }" class="nav-link">로그인</router-link>
+                        </button>
+                    </div>
+                
                 </div>
 
-            </button>
 
 
-            <div v-if="isLogin.value">
-                
-                <p class="navbar-text" style="font-size: large;">{{ `OO님 안녕하세요, ${getUserInfo.userInfo.name}님` }}</p>
-            </div>
-            <!-- <button @click="sidebarStore.toggle">Toggle Sidebar</button> -->
-<!-- 
-            <div v-show="sidebarStore.visible">
-                <Sidebar />
-            </div> -->
+           
 
-
-            <!-- <img class="bubble" src="/src/assets/logo/bubble.png" alt="" srcset="">
-            <div class="blink" ><p class="pop  luckiest-guy-regular">POP!</p></div>
- -->
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -105,11 +106,14 @@ nav{
     height: 500px;
     a{
         font-size: 100px;
-        padding-right: 300px;
     }
     
 }
 
+#login-button{
+    font-size: larger;
+    text-align: center;
+}
 @keyframes blink-effect {
   50% {
     opacity: 0;
@@ -125,25 +129,23 @@ nav{
 }
 
 .bubble-container {
-    position: relative;
-    width: 200px;
-    height: auto;
-    .bubble:hover{
-        cursor: pointer;
-
-    }
+    position: absolute;
+    top: 35%; /* 부모 요소 높이의 25% 위치에 배치 */
+    right: 5%; /* 부모 요소 오른쪽에서 5% 위치에 배치 */
+    transform: translate(-50%, -50%);
 }
 
 .bubble-container img{
-  width: 150px;
-  height: 150px;
-  vertical-align: middle;
+    width: 150px;
+    height: 150px;
+    vertical-align: middle;
 }
+
 
 .pop {
     position: absolute;
-    top: 40%;
-    left: 40%;
+    top: 30%;
+    left: 25%;
     width: 100%;
     text-align: center;
     transform: translate(-50%, -50%);

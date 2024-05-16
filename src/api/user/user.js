@@ -6,19 +6,12 @@ async function userConfirm(param, success, fail) {
   await local.post(`/auth/signin`, param).then(success).catch(fail);
 }
 
-// async function findById(success, fail) {
-//   // console.log()
-//   local.defaults.headers["Authorization"] = "Bearer " + sessionStorage.getItem("accessToken");
-//   await local.get(`/auth/`).then((success) =>
-//     console.log("success "+ success.data.userInfo)
-// ).catch(fail);
-// }
+
 
 async function findById(success, fail) {
   // console.log()
   local.defaults.headers["Authorization"] = "Bearer " + sessionStorage.getItem("accessToken");
   console.log(sessionStorage.getItem("accessToken"));
-  // await local.get(`/auth/`).then(success).catch(fail);
   return await local.get(`/auth/`).then((response) => {
     console.log("findById : " , response.data);
     console.log("findById : ", response.data.information);
@@ -32,13 +25,15 @@ async function findById(success, fail) {
 
 
 async function tokenRegeneration(user, success, fail) {
-  local.defaults.headers["refreshToken"] =  "Bearer " + sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
+  local.defaults.headers["Authorization"] =  "Bearer " + sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
   await local.post(`/auth/refresh`, user).then(success).catch(fail);
 }
 
 async function logout(success, fail) {
-  local.defaults.headers["refreshToken"] =  "Bearer " + sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
-  await local.post(`/auth/signout`).then(success).catch(fail);
+  local.defaults.headers["Authorization"] = "Bearer " + sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
+  await local.post(`/auth/signout`).then((response) => {
+    console.log("findById : " , response.status);
+  }).catch(fail);
 }
 
 export { userConfirm, findById, tokenRegeneration, logout };
