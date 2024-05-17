@@ -86,7 +86,10 @@ function onDeletePlan() {
               </div>
               <div class="divider mt-3 mb-3"></div>
               <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-outline-primary mb-3" @click="moveList">
+                <button type="button" class="btn btn-outline-primary mb-3" @click="">
+                  상세 계획
+                </button>
+                <button type="button" class="btn btn-outline-primary mb-3 ms-1" @click="moveList">
                   계획 목록
                 </button>
                 <button type="button" class="btn btn-outline-success mb-3 ms-1" @click="moveModify">

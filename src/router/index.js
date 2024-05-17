@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue"
-import TripView from "@/views/TripView.vue"
 import LeftTime from "@/components/common/VLeftTime.vue"
 import SearchBar from "@/components/common/Vsearch.vue"
 import MenuBar from "@/components/plan/MenuSlide.vue"
@@ -19,11 +18,6 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView
-    },
-    {
-      path: '/trip',
-      name: 'trip',
-      component: TripView
     },
     {
       path: '/left',
@@ -47,7 +41,7 @@ const router = createRouter({
     {
       path: '/plan',
       name: 'plan',
-      component: () => import ("@/views/PlanView.vue"),
+      component: () => import("@/views/PlanView.vue"),
       children: [
         {
           path: "create",
@@ -68,6 +62,18 @@ const router = createRouter({
           path: "list",
           name: "plan-list",
           component: () => import("@/components/plan/PlanList.vue"),
+        }
+      ]
+    },
+    {
+      path: '/detail',
+      name: 'detail',
+      component: () => import("@/views/DetailView.vue"),
+      children: [
+        {
+          path: "create/:planId",
+          name: "detail-create",
+          component: () => import("@/components/detail/DetailCreate.vue")
         }
       ]
     }

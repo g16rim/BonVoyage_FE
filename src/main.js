@@ -7,7 +7,8 @@ import router from './router'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { useKakao } from 'vue3-kakao-maps'
+import { useKakao } from 'vue3-kakao-maps/@utils'
+
 const { VITE_KAKAO_API_SERVICE_KEY } = import.meta.env
 useKakao(VITE_KAKAO_API_SERVICE_KEY)
 
