@@ -14,32 +14,37 @@ const { userLogin, getUserInfo } = authStore
 
 <template>
   <div id="main">
-
     <div class="luckiest-guy-regular" id="topMain">
-      <SwiperComponent/>
+      <SwiperComponent />
     </div>
     <div id="bottomMain">
-      <BestReviewComponent/>
+      <BestReviewComponent />
     </div>
 
   </div>
 </template>
 
 <style scoped>
-  #main {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* 위에서 아래로 정렬 */
-    align-items: stretch; /* 가로 너비에 맞게 확장 */
-    height: 100%; /* 전체 높이로 설정 */
-  }
-  #topMain {
-    flex: 1; /* 남은 공간을 모두 차지 */
-    background-color: #32a852;
-    width: 100%;
-    font-size: 300px;
-  }
-  #bottomMain {
-    flex: 0
-  }
+#main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* 위에서 아래로 정렬 */
+  align-items: stretch;
+  /* 가로 너비에 맞게 확장 */
+  height: 100%;
+  /* 전체 높이로 설정 */
+}
+
+#topMain {
+  flex: 1;
+  /* 남은 공간을 모두 차지 */
+  background-color: #32a852;
+  width: 100%;
+  font-size: 300px;
+}
+
+#bottomMain {
+  flex: 0
+}
 </style>
