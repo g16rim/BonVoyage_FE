@@ -3,6 +3,7 @@ import { RouterView, useRoute } from 'vue-router'
 import TheHeadingNavbar from '@/components/layout/TheHeadingNavbar.vue'
 import TheHeadingOtherNav from "@/components/layout/TheHeadingOtherNav.vue"
 import Sidebar from "@/components/layout/SideBar.vue";
+import TheFooter from '@/components/layout/TheFooter.vue'
 
 import { useSidebarStore } from '@/stores/sidebar';
 import { ref, watch } from 'vue';
@@ -33,6 +34,7 @@ watch(() => route.path, (newPath) => {
   <div id="app">
     <component :is="isHomeRoute ? TheHeadingNavbar : TheHeadingOtherNav" />
     <RouterView />
+    <TheFooter />
 
     <div class="side" v-show="sidebarStore.visible">
       <Sidebar />
