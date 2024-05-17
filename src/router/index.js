@@ -6,6 +6,8 @@ import SearchBar from "@/components/common/Vsearch.vue"
 import MenuBar from "@/components/plan/MenuSlide.vue"
 import ListFriendView from "@/components/group/ListFriend.vue"
 import MyPageView from "@/views/MyPageView.vue"
+import RecommendView from "@/components/call/Recommend.vue"
+import YoutubeView from "@/components/call/Youtube.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +40,16 @@ const router = createRouter({
       path: '/list',
       name: 'list',
       component: ListFriendView
+    },
+    {
+      path: '/music',
+      name: 'music',
+      component: RecommendView
+    },
+    {
+      path: '/youtube',
+      name: 'youtube',
+      component: YoutubeView
     },
     {
       path: '/mypage',
