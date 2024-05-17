@@ -41,10 +41,6 @@ watch(() => route.path, (newPath) => {
 </template>
 
 <style scoped>
-#app {
-  width: 100%;
-}
-
 .side {
   position: fixed;
   z-index: 999;

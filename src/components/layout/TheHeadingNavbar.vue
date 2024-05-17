@@ -27,10 +27,8 @@ const logout = () => {
 <template>
     <nav class="navbar navbar-expand-lg" style="background-color: #e2caa7;">
         <div class="container-fluid" style="background-color: #e2caa7;">
-
             <img class="logo1" src="/src/assets/logo/logo1.png" alt="" srcset="">
-            <a class="navbar-brand luckiest-guy-regular" href="#" style="padding-left: 50px;">BUBBLE <br>TRIP</a>
-
+            <a class="navbar-brand luckiest-guy-regular" href="/" style="padding-left: 50px;">BUBBLE <br>TRIP</a>
 
             <div class="bubble-container">
                 <button @click="sidebarStore.toggle">
@@ -47,7 +45,6 @@ const logout = () => {
                     <li class="nav-item">
                         <router-link id="login-button" :to="{ name: 'login' }" class="nav-link">로그아웃</router-link>
                     </li>
-
                 </div>
                 <div v-else>
                     <button class="nav-item">
@@ -61,7 +58,6 @@ const logout = () => {
 
 <style scoped>
 nav {
-
     width: 100%;
 
     .logo1 {
@@ -73,7 +69,6 @@ nav {
     a {
         font-size: 100px;
     }
-
 }
 
 #login-button {
