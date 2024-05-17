@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { KakaoMap } from 'vue3-kakao-maps';
-import { searchPlaces } from "@/api/site.js"
+import { searchPlaces, checkSitesExisting } from "@/api/site.js"
 
 const { VITE_OPEN_API_SERVICE_KEY } = import.meta.env
 
@@ -10,6 +10,25 @@ const map = ref()
 const markerInfoList = ref([]) // 검색 결과 site 배열
 const markers = ref([]) // 마커 배열
 const selectedMarkers = ref([]) // 선택한 site 배열
+const transformedMarkers = ref([])
+
+const transformMarkers = () => {
+    transformedMarkers.value = selectedMarkers.value.map(marker => ({
+        id: parseInt(marker.contentid),
+        title: marker.title,
+        latitude: parseFloat(marker.mapy),
+        longitude: parseFloat(marker.mapx),
+        type: parseInt(marker.contenttypeid),
+        address: `${marker.addr1} ${marker.addr2}`,
+        image: marker.firstimage,
+        areaCode: parseInt(marker.areacode),
+        tel: marker.tel,
+        dibCount: 0,
+        reviewCount: 0,
+        rating: 0.0
+    }))
+    console.log(transformedMarkers.value)
+}
 
 // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
 let bounds;
@@ -43,7 +62,6 @@ const drawMarkers = () => {
             marker.setMap(map.value);
         }
         // 마커에 고유 ID 설정
-        console.log(markerInfo.contentid)
         marker.id = markerInfo.contentid
 
         bounds.extend(point);
@@ -77,7 +95,6 @@ const drawMarkers = () => {
                 ovly.setVisible(false);
             });
             kakao.maps.event.addListener(mkr, 'click', () => {
-                console.log('선택 ' + mkr.id);
                 const existingIndex = selectedMarkers.value.findIndex(info => info.contentid === mkrInfo.contentid);
                 if (existingIndex !== -1) {
                     // 만약 마커 정보가 이미 존재한다면, 해당 마커 정보를 제외한 새 배열을 생성
@@ -86,7 +103,6 @@ const drawMarkers = () => {
                     // 마커 정보가 존재하지 않는다면, 배열에 추가
                     selectedMarkers.value.push(mkrInfo);
                 }
-                console.log(selectedMarkers.value);
             });
         })(marker, overlay, markerInfo); // 현재 marker와 overlay를 IIFE에 전달
     });
@@ -114,6 +130,20 @@ const getPlaces = () => {
             markerInfoList.value = data['response']['body']['items']['item']
             console.log(markers.value)
             drawMarkers()
+        },
+        (error) => {
+            console.error(error)
+        }
+    )
+}
+
+const findAndSave = () => {
+    transformMarkers()
+    console.log(transformedMarkers)
+    checkSitesExisting(
+        transformedMarkers.value,
+        ({ data }) => {
+            console.log("성공" + data)
         },
         (error) => {
             console.error(error)
@@ -167,12 +197,13 @@ const getPlaces = () => {
             </div>
             <div class="col-md-4">
                 <div class="selected-marker-info">
+                    <button @click="findAndSave" type="submit" class="btn btn-outline-success mb-3">계획 저장</button>
                     <h3>선택한 위치 정보</h3>
                     <ul class="list-group">
                         <li v-for="markerInfo in selectedMarkers" :key="markerInfo.contentid" class="list-group-item">
                             <div>아이디: <span>{{ markerInfo.contentid }}</span></div>
                             <div>제목: <span>{{ markerInfo.title }}</span></div>
-                            <div>유형: <span>{{ markerInfo.contentTypeId }}</span></div>
+                            <div>유형: <span>{{ markerInfo.contenttypeid }}</span></div>
                             <div>주소: <span>{{ markerInfo.addr1 }}</span></div>
                         </li>
                     </ul>
