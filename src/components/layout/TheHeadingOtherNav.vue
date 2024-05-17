@@ -1,5 +1,12 @@
 <script setup>
+    import { useMemberStore } from '@/stores/member'
+    import { storeToRefs } from "pinia"
+    const authStore = useMemberStore()
 
+
+    // 로그인 상태 확인
+    const { isLogin, isLoginError, userInfo } = storeToRefs(authStore)
+    console.log("로그인 상태 222222", isLogin.value)
 </script>
 
 <template>
@@ -16,40 +23,44 @@
                 </div>
             </div>
 
-            <!-- <img class="bubble" src="/src/assets/logo/bubble.png" alt="" srcset="">
-            <div class="blink" ><p class="pop  luckiest-guy-regular">POP!</p></div>
- -->
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <form class="d-flex justify-content-center mx-auto mb-2 mb-lg-0" role="search">
-                    <input class="form-control me-2" type="search" placeholder="떠나요" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">ok</button>
-                </form>
-                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <router-link :to="{ name: 'login' }" class="nav-link">로그인</router-link>
+            <div v-if="isLogin"> <!-- 로그인 상태에 따라 다른 내용 표시 -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <form class="d-flex justify-content-center mx-auto mb-2 mb-lg-0" role="search">
+                        <input class="form-control me-2" type="search" placeholder="떠나요" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">ok</button>
+                    </form>
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Dropdown
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <router-link :to="{ name: 'login' }" class="nav-link">로그인</router-link>
 
-                    </li>
-                </ul>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <div v-else> <!-- 로그인 전 메뉴 -->
+                <li class="nav-item">
+                    <router-link :to="{ name: 'login' }" class="nav-link">로그인</router-link>
+                </li>
             </div>
         </div>
     </nav>

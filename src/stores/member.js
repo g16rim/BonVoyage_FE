@@ -3,12 +3,11 @@ import { useRouter } from "vue-router"
 import { defineStore } from "pinia"
 import { jwtDecode } from "jwt-decode"
 
-import { userConfirm, findById, tokenRegeneration, logout } from "@/api/user"
+import { userConfirm, findById, tokenRegeneration, logout } from "@/api/user/user"
 import { httpStatusCode } from "@/util/http-status"
 
 export const useMemberStore = defineStore("memberStore", () => {
   const router = useRouter()
-
   const isLogin = ref(false)
   const isLoginError = ref(false)
   const userInfo = ref(null)
@@ -18,16 +17,18 @@ export const useMemberStore = defineStore("memberStore", () => {
     await userConfirm(
       loginUser,
       (response) => {
-        if (response.status === httpStatusCode.CREATE) {
+        console.log("status :", response.status)
+        if (response.status === httpStatusCode.OK) {
           console.log("로그인 성공!!!!")
           let { data } = response
-          let accessToken = data["access-token"]
-          let refreshToken = data["refresh-token"]
+          let accessToken = data["accessToken"]
+          let refreshToken = data["refreshToken"]
           isLogin.value = true
           isLoginError.value = false
           isValidToken.value = true
           sessionStorage.setItem("accessToken", accessToken)
           sessionStorage.setItem("refreshToken", refreshToken)
+          console.log(sessionStorage.value)
         }
       },
       (error) => {
@@ -43,13 +44,15 @@ export const useMemberStore = defineStore("memberStore", () => {
   const getUserInfo = async (token) => {
     let decodeToken = jwtDecode(token)
     console.log(decodeToken)
-    await findById(
-      decodeToken.userId,
+
+    userInfo.value = await findById(
       (response) => {
         if (response.status === httpStatusCode.OK) {
+          console.log("response data" + response.data)
           userInfo.value = response.data.userInfo
+          console.log("유저정보다임마"+ userInfo.value)
         } else {
-          console.log("유저 정보 없음!!!!")
+          console.log("유저 정보가 없습니다.")
         }
       },
       async (error) => {
@@ -63,7 +66,10 @@ export const useMemberStore = defineStore("memberStore", () => {
         await tokenRegenerate()
       }
     )
+    console.log("member.js 정보 : ", userInfo.value);
+    
   }
+
 
   const tokenRegenerate = async () => {
     await tokenRegeneration(
@@ -105,10 +111,10 @@ export const useMemberStore = defineStore("memberStore", () => {
   }
 
   const userLogout = async () => {
-    console.log("로그아웃 아이디 : " + userInfo.value.userId)
+
     await logout(
-      userInfo.value.userId,
       (response) => {
+        
         if (response.status === httpStatusCode.OK) {
           isLogin.value = false
           userInfo.value = null
@@ -117,11 +123,16 @@ export const useMemberStore = defineStore("memberStore", () => {
           sessionStorage.removeItem("accessToken")
           sessionStorage.removeItem("refreshToken")
         } else {
-          console.error("유저 정보 없음!!!!")
+          console.log("유저 정보가 없습니다.")
         }
       },
-      (error) => {
-        console.log(error)
+      async (error) => {
+        console.error(
+          "g[토큰 만료되어 사용 불가능.] : ",
+          error.response.status,
+          error.response.statusText
+        )
+        
       }
     )
   }
