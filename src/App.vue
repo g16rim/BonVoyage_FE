@@ -31,9 +31,9 @@ watch(() => route.path, (newPath) => {
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" class="app-container">
     <component :is="isHomeRoute ? TheHeadingNavbar : TheHeadingOtherNav" />
-    <RouterView />
+    <RouterView class="flex-grow" />
     <TheFooter />
 
     <div class="side" v-show="sidebarStore.visible">
@@ -45,6 +45,16 @@ watch(() => route.path, (newPath) => {
 <style scoped>
 * {
   font-family: 'GmarketSans';
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.flex-grow {
+  flex: 1;
 }
 
 .side {

@@ -3,8 +3,10 @@
 </script>
 
 <template>
-    <div class="py-6 text-2xl mt-12 mx-auto text-center bg-[#e2caa7] luckiest-guy-regular">
-        BON VOYAGE
+    <div class="footer-container">
+        <div class="py-6 text-2xl mt-12 mx-auto text-center bg-[#e2caa7] luckiest-guy-regular">
+            BON VOYAGE
+        </div>
     </div>
 </template>
 
