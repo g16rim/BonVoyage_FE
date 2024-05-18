@@ -1,11 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router'
 import { KakaoMap } from 'vue3-kakao-maps';
-import { searchPlaces, checkSitesExisting } from "@/api/site.js"
+import { searchPlaces, checkSitesExisting, registDetailPlan } from "@/api/site.js"
+import draggable from 'vuedraggable'
 
 const { VITE_OPEN_API_SERVICE_KEY } = import.meta.env
+const route = useRoute()
 
 const map = ref()
+const { planId } = route.params
 
 const markerInfoList = ref([]) // 검색 결과 site 배열
 const markers = ref([]) // 마커 배열
@@ -27,7 +31,6 @@ const transformMarkers = () => {
         reviewCount: 0,
         rating: 0.0
     }))
-    console.log(transformedMarkers.value)
 }
 
 // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
@@ -139,17 +142,36 @@ const getPlaces = () => {
 
 const findAndSave = () => {
     transformMarkers()
-    console.log(transformedMarkers)
     checkSitesExisting(
         transformedMarkers.value,
         ({ data }) => {
             console.log("성공" + data)
+            const detailPlanList = transformedMarkers.value.map((item, index) => ({
+                siteId: item.id,
+                day: 1, // 'day'가 항상 1로 고정된다고 가정
+                planOrder: index + 1, // 배열의 순서는 0부터 시작하므로 1을 더해줍니다
+                planId: parseInt(planId)
+            }));
+            console.log(detailPlanList)
+
+            // registDetailPlan 계획 상세 정보를 등록
+            registDetailPlan(
+                parseInt(planId),
+                detailPlanList,
+                (response) => {
+                    console.log("계획 상세 정보 등록 성공:", response);
+                },
+                (error) => {
+                    console.error("계획 상세 정보 등록 실패:", error);
+                }
+            );
         },
         (error) => {
             console.error(error)
         }
     )
 }
+
 
 </script>
 
@@ -198,15 +220,19 @@ const findAndSave = () => {
             <div class="col-md-4">
                 <div class="selected-marker-info">
                     <button @click="findAndSave" type="submit" class="btn btn-outline-success mb-3">계획 저장</button>
-                    <h3>선택한 위치 정보</h3>
-                    <ul class="list-group">
-                        <li v-for="markerInfo in selectedMarkers" :key="markerInfo.contentid" class="list-group-item">
-                            <div>아이디: <span>{{ markerInfo.contentid }}</span></div>
-                            <div>제목: <span>{{ markerInfo.title }}</span></div>
-                            <div>유형: <span>{{ markerInfo.contenttypeid }}</span></div>
-                            <div>주소: <span>{{ markerInfo.addr1 }}</span></div>
-                        </li>
-                    </ul>
+                    <h3>선택한 위치 정보 - draggable</h3>
+                    <draggable v-model="selectedMarkers" class="list-group" :key="selectedMarkers.contentid"
+                        item-key="contentid">
+                        <template #item="{ element: markerInfo, index }">
+                            <li class="list-group-item">
+                                <div>여행 순서: <span>{{ index + 1 }}</span></div>
+                                <div>아이디: <span>{{ markerInfo.contentid }}</span></div>
+                                <div>제목: <span>{{ markerInfo.title }}</span></div>
+                                <div>유형: <span>{{ markerInfo.contenttypeid }}</span></div>
+                                <div>주소: <span>{{ markerInfo.addr1 }}</span></div>
+                            </li>
+                        </template>
+                    </draggable>
                 </div>
             </div>
         </div>

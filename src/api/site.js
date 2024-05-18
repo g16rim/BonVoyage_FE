@@ -12,4 +12,8 @@ function checkSitesExisting(sites, success, fail) {
     local.post(`/travel/site`, JSON.stringify(sites)).then(success).catch(fail)
 }
 
-export { searchPlaces, checkSitesExisting }
+function registDetailPlan(planId, plans, success, fail) {
+    local.post(`/detail/${planId}`, JSON.stringify(plans)).then(success).catch(fail)
+}
+
+export { searchPlaces, checkSitesExisting, registDetailPlan }
