@@ -27,9 +27,9 @@ console.log("other navbar 로그인 상태: ", isLogin.value)
                         <li class="dropdown-li">
                             <hr class="dropdown-divider" />
                         </li>
-                        <li class="dropdown-li"><a class="dropdown-item" href="#">Group</a></li>
                         <li class="dropdown-li">
-                            <a class="dropdown-item" href="#">Plan</a>
+                            <router-link class="dropdown-item" :to="{ name: '' }">Group</router-link>
+                            <router-link class="dropdown-item" :to="{ name: 'plan-list' }">Plan</router-link>
                         </li>
                     </ul>
                 </div>
