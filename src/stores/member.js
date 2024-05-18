@@ -50,7 +50,7 @@ export const useMemberStore = defineStore("memberStore", () => {
         if (response.status === httpStatusCode.OK) {
           console.log("response data" + response.data)
           userInfo.value = response.data.userInfo
-          console.log("유저정보다임마"+ userInfo.value)
+          console.log("유저정보다임마" + userInfo.value)
         } else {
           console.log("유저 정보가 없습니다.")
         }
@@ -67,7 +67,7 @@ export const useMemberStore = defineStore("memberStore", () => {
       }
     )
     console.log("member.js 정보 : ", userInfo.value);
-    
+
   }
 
 
@@ -114,7 +114,7 @@ export const useMemberStore = defineStore("memberStore", () => {
 
     await logout(
       (response) => {
-        
+
         if (response.status === httpStatusCode.OK) {
           isLogin.value = false
           userInfo.value = null
@@ -132,10 +132,22 @@ export const useMemberStore = defineStore("memberStore", () => {
           error.response.status,
           error.response.statusText
         )
-        
+
       }
     )
   }
+
+  const checkLoginStatus = () => {
+    const accessToken = sessionStorage.getItem("accessToken")
+    if (accessToken) {
+      isLogin.value = true
+      isValidToken.value = true
+      // 필요하다면, 여기에서 accessToken을 사용하여 사용자 정보를 불러오는 로직을 추가할 수 있습니다.
+    }
+  }
+
+  // 스토어 초기화 시 로그인 상태 확인
+  checkLoginStatus()
 
   return {
     isLogin,

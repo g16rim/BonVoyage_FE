@@ -1,9 +1,15 @@
 import { localAxios } from "@/util/http-commons"
 
 const local = localAxios()
+const accessToken = sessionStorage.getItem("accessToken")
 
 function listPlan(success, fail) {
-    local.get(`/plan/list`, { }).then(success).catch(fail)
+    // local.defaults.headers["Authorization"] = "Bearer " + sessionStorage.getItem("accessToken");
+    local.get(`/plan/list`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+    }).then(success).catch(fail)
 }
 
 function createPlan(groupId, plan, success, fail) {

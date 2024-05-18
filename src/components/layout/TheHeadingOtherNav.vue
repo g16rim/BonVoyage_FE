@@ -6,7 +6,7 @@ const authStore = useMemberStore()
 
 // 로그인 상태 확인
 const { isLogin, isLoginError, userInfo } = storeToRefs(authStore)
-console.log("로그인 상태 222222", isLogin.value)
+console.log("other navbar 로그인 상태: ", isLogin.value)
 </script>
 
 <template>
