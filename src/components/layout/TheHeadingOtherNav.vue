@@ -1,21 +1,21 @@
 <script setup>
-    import { useMemberStore } from '@/stores/member'
-    import { storeToRefs } from "pinia"
-    const authStore = useMemberStore()
+import { useMemberStore } from '@/stores/member'
+import { storeToRefs } from "pinia"
+const authStore = useMemberStore()
 
 
-    // 로그인 상태 확인
-    const { isLogin, isLoginError, userInfo } = storeToRefs(authStore)
-    console.log("로그인 상태 222222", isLogin.value)
+// 로그인 상태 확인
+const { isLogin, isLoginError, userInfo } = storeToRefs(authStore)
+console.log("로그인 상태 222222", isLogin.value)
 </script>
 
 <template>
     <nav class="navbar navbar-expand-lg" style="background-color: #e2caa7;">
         <div class="container-fluid mx-3" style="background-color: #e2caa7; height: 100px;">
-           
+
             <img class="logo1" src="/src/assets/logo/logo1.png" alt="" srcset="">
-            <a class="navbar-brand luckiest-guy-regular"  href="#" style="padding-left: 50px;">BUBBLE TRIP</a>
-            
+            <a class="navbar-brand luckiest-guy-regular" href="#" style="padding-left: 50px;">BUBBLE TRIP</a>
+
             <div class="bubble-container">
                 <img class="bubble" src="/src/assets/logo/bubble.png" alt="" srcset="">
                 <div class="blink">
@@ -26,8 +26,8 @@
 
             <div v-if="isLogin"> <!-- 로그인 상태에 따라 다른 내용 표시 -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -67,30 +67,33 @@
 </template>
 
 <style scoped>
-nav{
+nav {
 
     width: 100%;
-    .logo1{
+
+    .logo1 {
         height: 100px;
     }
+
     height: 100px;
-    a{
+
+    a {
         font-size: 50px;
         padding-right: 1100px;
     }
-    
+
 }
 
 @keyframes blink-effect {
-  50% {
-    opacity: 0;
-  }
+    50% {
+        opacity: 0;
+    }
 }
 
 .blink {
-    
+
     width: 200px;
-    height: 50px; 
+    height: 50px;
     animation: blink-effect 1s step-end infinite;
     font-size: large;
 }
@@ -99,16 +102,17 @@ nav{
     position: relative;
     width: 50px;
     height: 50px;
-    .bubble:hover{
+
+    .bubble:hover {
         cursor: pointer;
 
     }
 }
 
-.bubble-container img{
-  width: 50px;
-  height: 50px;
-  vertical-align: middle;
+.bubble-container img {
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
 }
 
 .pop {
@@ -118,13 +122,14 @@ nav{
     width: 100%;
     text-align: center;
     transform: translate(-50%, -50%);
-    font-size: large; /* 필요에 따라 원하는 크기로 조정 */
-    opacity: 1; /* 초기에는 보이지 않도록 설정 */
+    font-size: large;
+    /* 필요에 따라 원하는 크기로 조정 */
+    opacity: 1;
+    /* 초기에는 보이지 않도록 설정 */
 }
 
 .bubble:hover .pop {
-    opacity: 1; /* bubble에 hover시 pop! 텍스트가 나타나도록 설정 */
+    opacity: 1;
+    /* bubble에 hover시 pop! 텍스트가 나타나도록 설정 */
 }
-
-
 </style>

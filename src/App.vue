@@ -43,6 +43,10 @@ watch(() => route.path, (newPath) => {
 </template>
 
 <style scoped>
+* {
+  font-family: 'GmarketSans';
+}
+
 .side {
   position: fixed;
   z-index: 999;
