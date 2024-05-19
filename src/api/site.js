@@ -16,4 +16,8 @@ function registDetailPlan(planId, plans, success, fail) {
     local.post(`/detail/${planId}`, JSON.stringify(plans)).then(success).catch(fail)
 }
 
-export { searchPlaces, checkSitesExisting, registDetailPlan }
+function listDetailPlan(planId, success, fail) {
+    local.get(`/detail/${planId}`, {}).then(success).catch(fail)
+}
+
+export { searchPlaces, checkSitesExisting, registDetailPlan, listDetailPlan }
