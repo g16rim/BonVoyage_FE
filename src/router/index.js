@@ -92,6 +92,11 @@ const router = createRouter({
           path: "create/:planId",
           name: "detail-create",
           component: () => import("@/components/detail/DetailCreate.vue")
+        },
+        {
+          path: "view/:planId",
+          name: "detail-view",
+          component: () => import("@/components/detail/DetailView.vue")
         }
       ]
     }
