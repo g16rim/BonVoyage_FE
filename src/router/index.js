@@ -4,10 +4,11 @@ import LoginView from "@/views/LoginView.vue"
 import LeftTime from "@/components/common/VLeftTime.vue"
 import SearchBar from "@/components/common/Vsearch.vue"
 import MenuBar from "@/components/plan/MenuSlide.vue"
-import ListFriendView from "@/components/group/ListFriend.vue"
+import ListFriendView from "@/components/group/ListGroup.vue"
 import MyPageView from "@/views/MyPageView.vue"
 import RecommendView from "@/components/call/Recommend.vue"
 import YoutubeView from "@/components/call/Youtube.vue"
+import MyGroupView from "@/views/MyGroupView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,6 +56,11 @@ const router = createRouter({
       path: '/mypage',
       name: 'mypage',
       component: MyPageView
+    },
+    {
+      path: '/group',
+      name: 'group',
+      component: MyGroupView
     },
     {
       path: '/plan',

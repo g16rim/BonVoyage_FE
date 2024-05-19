@@ -1,4 +1,5 @@
 <template>
+  <h1>내 그룹 목록</h1>
     <ul role="list" class="divide-y divide-gray-100">
       <li v-for="person in people" :key="person.email" class="flex justify-between gap-x-6 py-5">
         <div class="flex min-w-0 gap-x-4">

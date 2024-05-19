@@ -1,0 +1,149 @@
+<script setup>
+import { ref } from 'vue';
+
+const isModalOpen = ref(false);
+const currentPage = ref(0);
+
+const pages = [
+  { title: 'Step1. 그룹 이름 정하기', content: '<hr/><input type="text" placeholder="그룹 이름을 입력하세요" />' },
+  { title: 'Step2. 그룹 설명 작성', content: '<hr/><textarea placeholder="그룹 설명을 입력하세요"></textarea>' },
+  { title: 'Step3. 그룹 컨셉 정하기', content: '<hr/><p>그룹 설정을 선택하세요</p>' },
+  { title: 'Step4. 그룹 대표 이미지 정하기', content: '<hr/><p>그룹 설정을 선택하세요</p>' },
+  { title: 'Step5. 그룹 멤버 초대하기', content: '<hr/><p>그룹 설정을 선택하세요</p>' }
+];
+
+const toggleModal = () => {
+  isModalOpen.value = !isModalOpen.value;
+};
+
+const confirmClose = () => {
+  if (confirm('작성했던 내용이 사라집니다. 정말 닫으시겠습니까?')) {
+    toggleModal();
+  }
+};
+
+const nextPage = () => {
+  if (currentPage.value < pages.length - 1) {
+    currentPage.value++;
+  }
+};
+
+const prevPage = () => {
+  if (currentPage.value > 0) {
+    currentPage.value--;
+  }
+};
+</script>
+
+<template>
+  <h1>새 그룹 생성하기</h1>
+  <div class="container">
+    <div class="svg-wrapper" @click="toggleModal">
+      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 64 64">
+        <linearGradient id="KJ7ka9GQp0CHqT_2YsWMsa_44037_gr1" x1="32" x2="32" y1="5.75" y2="59.005" gradientUnits="userSpaceOnUse" spreadMethod="reflect"><stop offset="0" stop-color="#1a6dff"></stop><stop offset="1" stop-color="#c822ff"></stop></linearGradient>
+        <path fill="url(#KJ7ka9GQp0CHqT_2YsWMsa_44037_gr1)" d="M32,58C17.663,58,6,46.337,6,32S17.663,6,32,6s26,11.663,26,26S46.337,58,32,58z M32,8 C18.767,8,8,18.767,8,32s10.767,24,24,24s24-10.767,24-24S45.233,8,32,8z"></path>
+        <linearGradient id="KJ7ka9GQp0CHqT_2YsWMsb_44037_gr2" x1="32" x2="32" y1="5.75" y2="59.005" gradientUnits="userSpaceOnUse" spreadMethod="reflect"><stop offset="0" stop-color="#1a6dff"></stop><stop offset="1" stop-color="#c822ff"></stop></linearGradient>
+        <path fill="url(#KJ7ka9GQp0CHqT_2YsWMsb_44037_gr2)" d="M32,52c-11.028,0-20-8.972-20-20s8.972-20,20-20s20,8.972,20,20S43.028,52,32,52z M32,14 c-9.925,0-18,8.075-18,18s8.075,18,18,18s18-8.075,18-18S41.925,14,32,14z"></path>
+        <linearGradient id="KJ7ka9GQp0CHqT_2YsWMsc_44037_gr3" x1="32" x2="32" y1="21.75" y2="42.538" gradientUnits="userSpaceOnUse" spreadMethod="reflect"><stop offset="0" stop-color="#6dc7ff"></stop><stop offset="1" stop-color="#e6abff"></stop></linearGradient>
+        <path fill="url(#KJ7ka9GQp0CHqT_2YsWMsc_44037_gr3)" d="M41,30h-7v-7c0-0.552-0.448-1-1-1h-2c-0.552,0-1,0.448-1,1v7h-7c-0.552,0-1,0.448-1,1v2 c0,0.552,0.448,1,1,1h7v7c0,0.552,0.448,1,1,1h2c0.552,0,1-0.448,1-1v-7h7c0.552,0,1-0.448,1-1v-2C42,30.448,41.552,30,41,30z"></path>
+      </svg>
+    </div>
+  </div>
+
+  <div v-if="isModalOpen" class="modal-overlay" @click="toggleModal">
+    <div class="modal-content" @click.stop>
+      <h2>{{ pages[currentPage].title }}</h2>
+      <div v-html="pages[currentPage].content"></div>
+      <div class="modal-navigation">
+        <button v-if="currentPage > 0" class="prev-button" @click="prevPage">이전</button>
+        <button v-if="currentPage < pages.length - 1" class="next-button" @click="nextPage">다음</button>
+        <button v-if="currentPage === pages.length - 1" class="confirm-button" @click="confirmClose">완료</button>
+      </div>
+      <p class="page-info"> {{ currentPage + 1 }} / {{ pages.length }}</p>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh; /* Viewport height to ensure centering vertically */
+  text-align: center;
+  border: 1px solid black;
+  margin-bottom: 7%;
+}
+
+.svg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Full height of the container to ensure centering */
+  cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  height: 60vh;
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+}
+
+.modal-content input,
+.modal-content textarea {
+  border: 1px solid black; /* Add border to input and textarea */
+  width: 100%; /* Full width */
+  padding: 10px; /* Add some padding */
+  margin-bottom: 10px; /* Space between elements */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.modal-navigation {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.prev-button {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+.next-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.confirm-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.page-info {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+</style>
