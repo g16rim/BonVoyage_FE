@@ -102,7 +102,7 @@ const prevPage = () => {
   background: white;
   padding: 20px;
   border-radius: 5px;
-  max-width: 90%;
+  max-width: 60%;
   max-height: 90%;
   overflow: auto;
 }
