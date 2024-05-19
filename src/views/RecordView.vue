@@ -1,10 +1,13 @@
 <script setup>
-
+import NewGroup from "@/components/record/NewRecord.vue"
+import ListGroup from "@/components/record/ListRecord.vue"
 </script>
 
 <template>
     <div>
-        <h1>여행 기록</h1>
+        <NewGroup />
+        
+        <ListGroup />
     </div>
 </template>
 
