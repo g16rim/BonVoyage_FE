@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="recommend">
     <h1>노래 추천 검색</h1>
     <input type="text" v-model="searchText" placeholder="검색어를 입력하세요" />
     <button @click="fetchSongs">검색</button>
@@ -58,7 +58,7 @@ const fetchSongs = async () => {
 </script>
 
 <style>
-#app {
+#recommend {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
   /* margin-top: 60px; */
