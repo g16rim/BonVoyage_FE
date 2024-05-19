@@ -1,14 +1,27 @@
 <script setup>
 import { ref } from 'vue';
-
+import axios from 'axios';
+const { VITE_BASE_URL } = import.meta.env
 const isModalOpen = ref(false);
 const currentPage = ref(0);
+const selectedFile = ref(null);
+
+const groupName = ref('');
+const groupDescription = ref('');
+const groupConcept = ref('');
 
 const pages = [
-  { title: 'Step1. 그룹 이름 정하기', content: '<hr/><input type="text" placeholder="그룹 이름을 입력하세요" />' },
-  { title: 'Step2. 그룹 설명 작성', content: '<hr/><textarea placeholder="그룹 설명을 입력하세요"></textarea>' },
-  { title: 'Step3. 그룹 컨셉 정하기', content: '<hr/><p>그룹 설정을 선택하세요</p>' },
-  { title: 'Step4. 그룹 대표 이미지 정하기', content: '<hr/><p>그룹 설정을 선택하세요</p>' },
+  { title: 'Step1. 그룹 이름 정하기', content: '<hr/><input type="text" v-model="groupName" placeholder="그룹 이름을 입력하세요" />' },
+  { title: 'Step2. 그룹 설명 작성', content: '<hr/><textarea v-model="groupDescription" placeholder="그룹 설명을 입력하세요"></textarea>' },
+  { title: 'Step3. 그룹 컨셉 정하기', content: '<hr/><input type="text" v-model="groupConcept" placeholder="그룹 컨셉을 입력하세요" />' },
+  { 
+    title: 'Step4. 그룹 대표 이미지 정하기', 
+    content: `
+      <hr/>
+      <input type="file" id="file-input" @change="handleFileChange" />
+      <p>그룹 대표 이미지를 선택하세요</p>
+    ` 
+  },
   { title: 'Step5. 그룹 멤버 초대하기', content: '<hr/><p>그룹 설정을 선택하세요</p>' }
 ];
 
@@ -31,6 +44,38 @@ const nextPage = () => {
 const prevPage = () => {
   if (currentPage.value > 0) {
     currentPage.value--;
+  }
+};
+
+const handleFileChange = (event) => {
+  selectedFile.value = event.target.files[0];
+  console.log('Selected file:', selectedFile.value);
+};
+
+const submitGroup = async () => {
+  const formData = new FormData();
+  console.log("groupName = ", groupName.value,"is");
+  formData.append('groupName', groupName.value);
+  formData.append('groupDescription', groupDescription.value);
+  formData.append('groupConcept', groupConcept.value);
+  if (selectedFile.value) {
+    formData.append('file', selectedFile.value);
+  }
+
+  try {
+    console.log("form = ",formData.get('groupName'));
+    const response = await axios.post(VITE_BASE_URL+'/teams', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    if (response.status === 201) {
+      alert('그룹이 성공적으로 생성되었습니다.');
+      toggleModal();
+    }
+  } catch (error) {
+    console.error('그룹 생성 중 오류 발생:', error);
+    alert('그룹 생성에 실패했습니다.');
   }
 };
 </script>
@@ -57,21 +102,19 @@ const prevPage = () => {
       <div class="modal-navigation">
         <button v-if="currentPage > 0" class="prev-button" @click="prevPage">이전</button>
         <button v-if="currentPage < pages.length - 1" class="next-button" @click="nextPage">다음</button>
-        <button v-if="currentPage === pages.length - 1" class="confirm-button" @click="confirmClose">완료</button>
+        <button v-if="currentPage === pages.length - 1" class="confirm-button" @click="submitGroup">완료</button>
       </div>
       <p class="page-info"> {{ currentPage + 1 }} / {{ pages.length }}</p>
     </div>
   </div>
 </template>
-
 <style scoped>
-
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh; /* Viewport height to ensure centering vertically */
+  height: 50vh;
   text-align: center;
   border: 1px solid black;
   margin-bottom: 7%;
@@ -81,8 +124,8 @@ const prevPage = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%; /* Full height of the container to ensure centering */
-  cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+  height: 100%;
+  cursor: pointer;
 }
 
 .modal-overlay {
@@ -109,11 +152,11 @@ const prevPage = () => {
 
 .modal-content input,
 .modal-content textarea {
-  border: 1px solid black; /* Add border to input and textarea */
-  width: 100%; /* Full width */
-  padding: 10px; /* Add some padding */
-  margin-bottom: 10px; /* Space between elements */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  border: 1px solid black;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
 .modal-navigation {
