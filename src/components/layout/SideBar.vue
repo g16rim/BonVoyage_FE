@@ -15,36 +15,16 @@ const toggleSidebar = () => {
     <div class="sidebar-content">
         <div class="flex flex-col sm:flex-row sm:justify-end">
             <div class="w-64 h-screen bg-blue-300" style="background-color: #9cd7ff;width: 500px;">
+                <div class="flex justify-end p-2">
+                    <button @click="toggleSidebar" class="text-black font-bold text-xl">&times;</button>
+                </div>
                 <div class="flex items-center justify-center mt-10">
                     <img class="h-6" src="/src/assets/logo/logo2.png" style="width: 150px;height: auto;">
                 </div>
 
                 <router-link
                     class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700"
-                    :to="{ name: 'plan-create' }">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <span class="mx-4 font-medium">New Plan</span>
-                </router-link>
-
-                <router-link
-                    class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700"
-                    :to="{ name: 'detail-create', params: { planId: 1 } }">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <span class="mx-4 font-medium">Detail Plan</span>
-                </router-link>
-
-
-                <router-link
-                    class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700"
-                    :to="{ name: 'group' }">
+                    :to="{ name: 'group' }" @click="toggleSidebar">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17"
@@ -53,10 +33,21 @@ const toggleSidebar = () => {
                     <span class="mx-4 font-medium">My Group</span>
                 </router-link>
 
+                <router-link
+                    class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700"
+                    :to="{ name: 'plan-list' }" @click="toggleSidebar">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span class="mx-4 font-medium">My Plan</span>
+                </router-link>
+
 
                 <router-link
                     class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700"
-                    :to="{ name: 'record' }">
+                    :to="{ name: 'record' }" @click="toggleSidebar">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z"
@@ -70,7 +61,7 @@ const toggleSidebar = () => {
 
                 <router-link
                     class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700"
-                    :to="{ name: 'mypage' }">
+                    :to="{ name: 'mypage' }" @click="toggleSidebar">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z"
@@ -78,10 +69,10 @@ const toggleSidebar = () => {
                         <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <span class="mx-4 font-medium">MyPage</span>
+                    <span class="mx-4 font-medium">My Page</span>
                 </router-link>
 
-                <a class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700"
+                <!-- <a class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700"
                     href="#">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -93,10 +84,11 @@ const toggleSidebar = () => {
                     </svg>
 
                     <span class="mx-4 font-medium">Settings</span>
-                </a>
+                </a> -->
 
                 <div class="absolute bottom-0 my-10">
-                    <a class="flex items-center justify-end py-2 px-8 text-gray-500 hover:text-gray-600" href="#">
+                    <router-link class="flex items-center justify-end py-2 px-8 text-gray-500 hover:text-gray-600"
+                        :to="{ name: '' }" @click="toggleSidebar">
 
                         <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -105,8 +97,8 @@ const toggleSidebar = () => {
                         </svg>
 
 
-                        <span class="mx-4 font-medium">Support</span>
-                    </a>
+                        <span class="mx-4 font-medium">Logout</span>
+                    </router-link>
                 </div>
             </div>
         </div>
