@@ -5,8 +5,8 @@ import Step1 from './Step1.vue';
 import Step2 from './Step2.vue';
 import Step3 from './Step3.vue';
 import Step4 from './Step4.vue';
-import Step5 from './Step5.vue';
-
+// import Step5 from './Step5.vue';
+const accessToken = sessionStorage.getItem('accessToken'); // 로컬 스토리지에서 accessToken을 가져옴
 const { VITE_BASE_URL } = import.meta.env;
 const isModalOpen = ref(false);
 const currentPage = ref(0);
@@ -21,7 +21,7 @@ const pages = [
   { title: 'Step2. 그룹 설명 작성', component: Step2 },
   { title: 'Step3. 그룹 컨셉 정하기', component: Step3 },
   { title: 'Step4. 그룹 대표 이미지 정하기', component: Step4 },
-  { title: 'Step5. 그룹 멤버 초대하기', component: Step5 }
+  // { title: 'Step5. 그룹 멤버 초대하기', component: Step5 }
 ];
 
 const toggleModal = () => {
@@ -54,13 +54,28 @@ const handleFileChange = (file) => {
 };
 
 const submitGroup = async () => {
-  const requestData = {
+  const request = {
     name: groupName.value,
-    description: groupDescription.value
+    description: groupDescription.value,
+    preference: groupConcept.value
   };
-  console.log("그룹 이름",groupName.value)
+
+  const formData = new FormData();
+  formData.append('request', new Blob([JSON.stringify(request)], { type: 'application/json' }));
+
+  if (selectedFile.value) {
+    formData.append('file', selectedFile.value);
+  }
+
+
   try {
-    const response = await axios.post(VITE_BASE_URL + '/teams', requestData);
+    console.log("accessToken = ", accessToken)
+    const response = await axios.post(VITE_BASE_URL + '/teams', formData, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
     if (response.status === 201) {
       alert('그룹이 성공적으로 생성되었습니다.');
       toggleModal();
