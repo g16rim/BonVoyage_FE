@@ -2,12 +2,12 @@
   <div id="groupList">
     <h1>내 그룹 목록</h1>
     <ul role="list" class="divide-y divide-gray-100">
-      <li v-for="person in people" :key="person.email" class="flex justify-between gap-x-6 py-5">
+      <li v-for="person in people" :key="person.id" class="flex justify-between gap-x-6 py-5">
         <div class="flex min-w-0 gap-x-4">
           <img class="h-12 w-12 flex-none rounded-full bg-gray-50" :src="person.imageUrl" alt="" />
           <div class="min-w-0 flex-auto">
             <p class="text-sm font-semibold leading-6 text-gray-900">{{ person.name }}</p>
-            <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ person.email }}</p>
+            <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ person.description }}</p>
             <button @click="openModal(person)"
               class="px-8 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg">
               멤버 추가
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-          <p class="text-sm leading-6 text-gray-900">{{ person.role }}</p>
+          <p class="text-sm leading-6 text-gray-900">{{ person.preference }}</p>
           <p v-if="person.lastSeen" class="mt-1 text-xs leading-5 text-gray-500">
             Last seen <time :datetime="person.lastSeenDateTime">{{ person.lastSeen }}</time>
           </p>
@@ -59,23 +59,46 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import axios from 'axios';
 
-const people = [
-  {
-    name: 'Leslie Alexander',
-    email: 'leslie.alexander@example.com',
-    role: 'Co-Founder / CEO',
-    imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    lastSeen: '3h ago',
-    lastSeenDateTime: '2023-01-23T13:23Z',
-  },
-  // 나머지 people 데이터 생략
-];
+// Function to get accessToken from sessionStorage
+const getAccessToken = () => {
+  return sessionStorage.getItem('accessToken');
+};
 
+const people = ref([]);
+
+const fetchMembers = async () => {
+  const accessToken = getAccessToken();
+  if (accessToken) {
+    try {
+      const response = await axios.get('http://localhost:8080/api/teams/members', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      people.value = response.data;
+    } catch (error) {
+      console.error('Error fetching members:', error);
+    }
+  } else {
+    console.error('No accessToken found in sessionStorage');
+  }
+};
+
+onMounted(() => {
+  fetchMembers();
+
+  // ESC 키로 모달 닫기
+  window.addEventListener('keydown', handleEscapeKey);
+});
+
+// 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleEscapeKey);
+});
 
 let newMemberEmail = '';
-
 const modalOpen = ref(false);
 
 const openModal = () => {
@@ -86,23 +109,11 @@ const closeModal = () => {
   modalOpen.value = false;
 };
 
-// ESC 키로 모달 닫기
 const handleEscapeKey = (event) => {
   if (event.key === 'Escape') {
     closeModal();
   }
 };
-
-onMounted(() => {
-  // ESC 키 이벤트 리스너 추가
-  window.addEventListener('keydown', handleEscapeKey);
-});
-
-// 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleEscapeKey);
-});
-
 </script>
 
 <style scoped>
