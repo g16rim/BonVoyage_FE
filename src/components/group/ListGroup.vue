@@ -1,5 +1,6 @@
 <template>
-  <h1>내 그룹 목록</h1>
+  <div id="groupList">
+    <h1>내 그룹 목록</h1>
     <ul role="list" class="divide-y divide-gray-100">
       <li v-for="person in people" :key="person.email" class="flex justify-between gap-x-6 py-5">
         <div class="flex min-w-0 gap-x-4">
@@ -7,7 +8,7 @@
           <div class="min-w-0 flex-auto">
             <p class="text-sm font-semibold leading-6 text-gray-900">{{ person.name }}</p>
             <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ person.email }}</p>
-            <button type="button" @click="moveCreate"
+            <button @click="openModal(person)"
               class="px-8 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg">
               멤버 추가
             </button>
@@ -31,61 +32,79 @@
         </div>
       </li>
     </ul>
-  </template>
-  
-  <script setup>
-  const people = [
-    {
-      name: 'Leslie Alexander',
-      email: 'leslie.alexander@example.com',
-      role: 'Co-Founder / CEO',
-      imageUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      lastSeen: '3h ago',
-      lastSeenDateTime: '2023-01-23T13:23Z',
-    },
-    {
-      name: 'Michael Foster',
-      email: 'michael.foster@example.com',
-      role: 'Co-Founder / CTO',
-      imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      lastSeen: '3h ago',
-      lastSeenDateTime: '2023-01-23T13:23Z',
-    },
-    {
-      name: 'Dries Vincent',
-      email: 'dries.vincent@example.com',
-      role: 'Business Relations',
-      imageUrl:
-        'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      lastSeen: null,
-    },
-    {
-      name: 'Lindsay Walton',
-      email: 'lindsay.walton@example.com',
-      role: 'Front-end Developer',
-      imageUrl:
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      lastSeen: '3h ago',
-      lastSeenDateTime: '2023-01-23T13:23Z',
-    },
-    {
-      name: 'Courtney Henry',
-      email: 'courtney.henry@example.com',
-      role: 'Designer',
-      imageUrl:
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      lastSeen: '3h ago',
-      lastSeenDateTime: '2023-01-23T13:23Z',
-    },
-    {
-      name: 'Tom Cook',
-      email: 'tom.cook@example.com',
-      role: 'Director of Product',
-      imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      lastSeen: null,
-    },
-  ]
-  </script>
+
+    <!-- 모달 창 -->
+    <div v-if="modalOpen" class="modal-overlay fixed inset-0 overflow-y-auto flex justify-center items-center" @click="closeModal">
+      <div class="modal-content flex justify-center items-center min-h-screen w-full" @click.stop>
+        <div class="bg-white w-1/2 p-8 rounded-lg shadow-lg">
+          <h2 class="text-lg font-bold mb-4">새 멤버 추가</h2>
+          <div class="mb-4">
+            <label for="newMemberEmail" class="block text-sm font-medium text-gray-700">이메일</label>
+            <input type="email" v-model="newMemberEmail" id="newMemberEmail" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+          </div>
+          <div class="flex justify-end">
+            <button @click="closeModal" type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              취소
+            </button>
+            <button @click="addMember" type="button" class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              추가
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="modalOpen" class="fixed inset-0 bg-black opacity-25"></div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+
+const people = [
+  {
+    name: 'Leslie Alexander',
+    email: 'leslie.alexander@example.com',
+    role: 'Co-Founder / CEO',
+    imageUrl:
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    lastSeen: '3h ago',
+    lastSeenDateTime: '2023-01-23T13:23Z',
+  },
+  // 나머지 people 데이터 생략
+];
+
+
+let newMemberEmail = '';
+
+const modalOpen = ref(false);
+
+const openModal = () => {
+  modalOpen.value = true;
+};
+
+const closeModal = () => {
+  modalOpen.value = false;
+};
+
+// ESC 키로 모달 닫기
+const handleEscapeKey = (event) => {
+  if (event.key === 'Escape') {
+    closeModal();
+  }
+};
+
+onMounted(() => {
+  // ESC 키 이벤트 리스너 추가
+  window.addEventListener('keydown', handleEscapeKey);
+});
+
+// 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleEscapeKey);
+});
+
+</script>
+
+<style scoped>
+/* 디자인 관련 스타일 */
+</style>
