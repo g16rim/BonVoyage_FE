@@ -1,56 +1,7 @@
 <script setup>
-// import { KakaoMap, KakaoMapMarkerPolyline } from 'vue3-kakao-maps'
-// import { listDetailPlan } from '@/api/site.js'
-// import { onMounted, ref } from 'vue'
-// import { useRoute } from 'vue-router'
-
-// const route = useRoute()
-// const { planId } = route.params
-// const plans = ref([])
-// const markerList = ref([])
-
-// onMounted(() => {
-//     getDetailPlans()
-// })
-// // 목록 가지고 오기
-// const getDetailPlans = () => {
-//     listDetailPlan(
-//         planId,
-//         ({ data }) => {
-//             plans.value = data
-//             getMarkerList()
-//         },
-//         (error) => {
-//             console.error(error)
-//         }
-//     )
-// }
-// // 마커 리스트 만들기
-// const getMarkerList = () => {
-//     let index = 1
-//     markerList.value = plans.value.map(plan => ({
-//         lat: plan.latitude,
-//         lng: plan.longitude,
-//         order: index++
-//     }))
-// }
-// // 지도 범위 재설정
-// let bounds
-// const map = ref()
-// const onLoadKakaoMap = (mapRef) => {
-//     map.value = mapRef
-//     bounds = new kakao.maps.LatLngBounds()
-//     markerList.value.forEach((marker) => {
-//         const point = new kakao.maps.LatLng(marker.lat, marker.lng)
-//         bounds.extend(point)
-//     })
-//     if (map.value !== undefined) {
-//         map.value.setBounds(bounds)
-//     }
-// }
 import { KakaoMap, KakaoMapMarkerPolyline } from 'vue3-kakao-maps'
 import { listDetailPlan } from '@/api/site.js'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -83,12 +34,16 @@ onMounted(() => {
     getDetailPlans()
 })
 
+onUnmounted(() => {
+})
+
 // 목록 가져오기
 const getDetailPlans = async () => {
     await listDetailPlan(
         planId,
         ({ data }) => {
             plans.value = data
+            console.log(plans)
             getMarkerList()
         },
         (error) => {
@@ -103,7 +58,12 @@ const getMarkerList = () => {
     markerList.value = plans.value.map(plan => ({
         lat: plan.latitude,
         lng: plan.longitude,
-        order: index++
+        order: index++,
+        image: {
+            imageSrc: `/src/assets/marker/${plan.type}.png`,
+            imageWidth: 48,
+            imageHeight: 48
+        }
     }))
     // 마커 리스트가 업데이트 된 후 지도 범위 재설정
     resetMapBounds()
@@ -115,15 +75,36 @@ watch(plans, (newPlans) => {
         getMarkerList()
     }
 }, { deep: true })
+
+// bubble bubble
 </script>
 
 <template>
-    <div v-for="plan in plans" :key="plan.planOrder">
-        {{ plan.planOrder }} / {{ plan.latitude }} / {{ plan.longitude }}
+    <div id="container">
+        <div class="row">
+            <div class="col-md-6">
+                <KakaoMap :lat="37.5030960206" :lng="127.038175715" @onLoadKakaoMap="onLoadKakaoMap">
+                    <KakaoMapMarkerPolyline :markerList="markerList" :showMarkerOrder="true" />
+                </KakaoMap>
+            </div>
+            <div class="col-md-6">
+                <div class="card" style="height: 30rem; width: 40rem; overflow-y: scroll;">
+                    <div v-for="plan in plans" :key="plan.planOrder" class="row g-0">
+                        <div class="col-md-4">
+                            <img v-if="plan.image" :src="plan.image" class="img-fluid rounded-start" alt="...">
+                            <img v-else src="/src/assets/no-image.png" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ plan.planOrder }} {{ plan.title }}</h5>
+                                <p class="card-text"><small class="text-muted">{{ plan.address }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <KakaoMap :lat="37.5030960206" :lng="127.038175715" @onLoadKakaoMap="onLoadKakaoMap">
-        <KakaoMapMarkerPolyline :markerList="markerList" :showMarkerOrder="true" />
-    </KakaoMap>
 </template>
 
 <style scoped></style>

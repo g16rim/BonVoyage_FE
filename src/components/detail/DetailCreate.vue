@@ -177,7 +177,6 @@ const findAndSave = () => {
 
 <template>
     <div class="container-fluid">
-        <h1>Detail Plan</h1>
         <div class="row">
             <div class="col-md-8">
                 <select v-model="param.areaCode">
@@ -220,7 +219,7 @@ const findAndSave = () => {
             <div class="col-md-4">
                 <div class="selected-marker-info">
                     <button @click="findAndSave" type="submit" class="btn btn-outline-success mb-3">계획 저장</button>
-                    <h3>선택한 위치 정보 - draggable</h3>
+                    <h3>선택한 위치 정보</h3>
                     <draggable v-model="selectedMarkers" class="list-group" :key="selectedMarkers.contentid"
                         item-key="contentid">
                         <template #item="{ element: markerInfo, index }">
