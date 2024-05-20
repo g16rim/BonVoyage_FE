@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue"
-import LeftTime from "@/components/common/VLeftTime.vue"
 import SearchBar from "@/components/common/Vsearch.vue"
 import MenuBar from "@/components/plan/MenuSlide.vue"
 import ListFriendView from "@/components/group/ListGroup.vue"
@@ -21,16 +20,11 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
-  
+
     {
       path: '/login',
       name: 'login',
       component: LoginView
-    },
-    {
-      path: '/left',
-      name: 'left',
-      component: LeftTime
     },
     {
       path: '/search',
