@@ -21,15 +21,24 @@ console.log("other navbar 로그인 상태: ", isLogin.value)
                     <a class=" nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="/src/assets/logo/bubble.png" alt="my-menu" style="width: 50px; height: 50px" />
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end luckiest-guy-regular" style="font-size: 20px;">
-                        <li class="dropdown-li"><a class="dropdown-item" href="#">My Page</a>
+                    <ul class="dropdown-menu dropdown-menu-end" style="font-size: 20px; background-color: #9cd7ff;">
+                        <li class="dropdown-li text-center">{{ userInfo.grade.grade }}, <br />{{ userInfo.username }} 님
+                        </li>
+                        <li class="dropdown-li">
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li class="dropdown-li"><a class="dropdown-item luckiest-guy-regular" href="#">My Page</a>
                         </li>
                         <li class="dropdown-li">
                             <hr class="dropdown-divider" />
                         </li>
                         <li class="dropdown-li">
-                            <router-link class="dropdown-item" :to="{ name: '' }">Group</router-link>
-                            <router-link class="dropdown-item" :to="{ name: 'plan-list' }">Plan</router-link>
+                            <router-link class="dropdown-item luckiest-guy-regular"
+                                :to="{ name: '' }">Group</router-link>
+                            <router-link class="dropdown-item luckiest-guy-regular"
+                                :to="{ name: 'plan-list' }">Plan</router-link>
+                            <router-link class="dropdown-item luckiest-guy-regular"
+                                :to="{ name: 'plan-list' }">Record</router-link>
                         </li>
                     </ul>
                 </div>

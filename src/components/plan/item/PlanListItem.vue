@@ -12,7 +12,6 @@ defineProps({ plan: Object })
     </td>
     <td>{{ plan.startDate }}</td>
     <td>{{ plan.endDate }}</td>
-    <td>{{ plan.budget }}</td>
   </tr>
 </template>
 

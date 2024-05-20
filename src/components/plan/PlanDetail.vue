@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getPlan, deletePlan } from '@/api/plan.js'
+import VLeftTime from '@/components/common/VLeftTime.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -19,6 +20,7 @@ const showPlan = () => {
     planId,
     ({ data }) => {
       plan.value = data
+      console.log(plan.value)
     },
     (error) => {
       console.log(error)
@@ -45,7 +47,7 @@ function onDeletePlan() {
       if (response.status === 200) moveList()
     },
     (error) => {
-      console.log(error)
+      console.error(error)
     }
   )
 }
@@ -53,9 +55,9 @@ function onDeletePlan() {
 </script>
 
 <template>
-  detail
-  <div class="container mt-5">
-    <div class="row">
+  <div class="container">
+    <div class="row mt-5">
+      <VLeftTime :dday="plan.startDate" />
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
