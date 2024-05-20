@@ -9,7 +9,7 @@ import MyPageView from "@/views/MyPageView.vue"
 import RecommendView from "@/components/call/Recommend.vue"
 import YoutubeView from "@/components/call/Youtube.vue"
 import MyGroupView from "@/views/MyGroupView.vue"
-import RecordView from "@/views/RecordView.vue"
+import ParentView from "@/components/record/ParentComponent.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +19,7 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
+  
     {
       path: '/login',
       name: 'login',
@@ -46,7 +47,7 @@ const router = createRouter({
     {
       path: '/record',
       name: 'record',
-      component: RecordView
+      component: ParentView
     },
     {
       path: '/music',

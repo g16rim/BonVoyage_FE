@@ -1,7 +1,13 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-const { VITE_BASE_URL } = import.meta.env
+import Step1 from './Step1.vue';
+import Step2 from './Step2.vue';
+import Step3 from './Step3.vue';
+import Step4 from './Step4.vue';
+import Step5 from './Step5.vue';
+
+const { VITE_BASE_URL } = import.meta.env;
 const isModalOpen = ref(false);
 const currentPage = ref(0);
 const selectedFile = ref(null);
@@ -11,32 +17,27 @@ const groupDescription = ref('');
 const groupConcept = ref('');
 
 const pages = [
-  { title: 'Step1. 그룹 이름 정하기', content: '<hr/><input type="text" v-model="groupName" placeholder="그룹 이름을 입력하세요" />' },
-  { title: 'Step2. 그룹 설명 작성', content: '<hr/><textarea v-model="groupDescription" placeholder="그룹 설명을 입력하세요"></textarea>' },
-  { title: 'Step3. 그룹 컨셉 정하기', content: '<hr/><input type="text" v-model="groupConcept" placeholder="그룹 컨셉을 입력하세요" />' },
-  { 
-    title: 'Step4. 그룹 대표 이미지 정하기', 
-    content: `
-      <hr/>
-      <input type="file" id="file-input" @change="handleFileChange" />
-      <p>그룹 대표 이미지를 선택하세요</p>
-    ` 
-  },
-  { title: 'Step5. 그룹 멤버 초대하기', content: '<hr/><p>그룹 설정을 선택하세요</p>' }
+  { title: 'Step1. 그룹 이름 정하기', component: Step1 },
+  { title: 'Step2. 그룹 설명 작성', component: Step2 },
+  { title: 'Step3. 그룹 컨셉 정하기', component: Step3 },
+  { title: 'Step4. 그룹 대표 이미지 정하기', component: Step4 },
+  { title: 'Step5. 그룹 멤버 초대하기', component: Step5 }
 ];
 
 const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value;
 };
 
-const confirmClose = () => {
-  if (confirm('작성했던 내용이 사라집니다. 정말 닫으시겠습니까?')) {
-    toggleModal();
-  }
-};
-
 const nextPage = () => {
   if (currentPage.value < pages.length - 1) {
+    if (currentPage.value === 0 && groupName.value === '') {
+      alert('그룹 이름을 입력하세요.');
+      return;
+    }
+    if (currentPage.value === 3 && selectedFile.value === null) {
+      alert('그룹 대표 이미지를 선택하세요.');
+      return;
+    }
     currentPage.value++;
   }
 };
@@ -47,28 +48,19 @@ const prevPage = () => {
   }
 };
 
-const handleFileChange = (event) => {
-  selectedFile.value = event.target.files[0];
+const handleFileChange = (file) => {
+  selectedFile.value = file;
   console.log('Selected file:', selectedFile.value);
 };
 
 const submitGroup = async () => {
-  const formData = new FormData();
-  console.log("groupName = ", groupName.value,"is");
-  formData.append('groupName', groupName.value);
-  formData.append('groupDescription', groupDescription.value);
-  formData.append('groupConcept', groupConcept.value);
-  if (selectedFile.value) {
-    formData.append('file', selectedFile.value);
-  }
-
+  const requestData = {
+    name: groupName.value,
+    description: groupDescription.value
+  };
+  console.log("그룹 이름",groupName.value)
   try {
-    console.log("form = ",formData.get('groupName'));
-    const response = await axios.post(VITE_BASE_URL+'/teams', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await axios.post(VITE_BASE_URL + '/teams', requestData);
     if (response.status === 201) {
       alert('그룹이 성공적으로 생성되었습니다.');
       toggleModal();
@@ -98,16 +90,25 @@ const submitGroup = async () => {
   <div v-if="isModalOpen" class="modal-overlay" @click="toggleModal">
     <div class="modal-content" @click.stop>
       <h2>{{ pages[currentPage].title }}</h2>
-      <div v-html="pages[currentPage].content"></div>
+      <component :is="pages[currentPage].component"
+        v-bind:groupName="groupName"
+        v-bind:groupDescription="groupDescription"
+        v-bind:groupConcept="groupConcept"
+        @update:groupName="groupName = $event"
+        @update:groupDescription="groupDescription = $event"
+        @update:groupConcept="groupConcept = $event"
+        @update:file="handleFileChange"
+      />
       <div class="modal-navigation">
         <button v-if="currentPage > 0" class="prev-button" @click="prevPage">이전</button>
         <button v-if="currentPage < pages.length - 1" class="next-button" @click="nextPage">다음</button>
         <button v-if="currentPage === pages.length - 1" class="confirm-button" @click="submitGroup">완료</button>
       </div>
-      <p class="page-info"> {{ currentPage + 1 }} / {{ pages.length }}</p>
+      <p class="page-info">{{ currentPage + 1 }} / {{ pages.length }}</p>
     </div>
   </div>
 </template>
+
 <style scoped>
 .container {
   display: flex;

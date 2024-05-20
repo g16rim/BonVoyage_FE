@@ -14,8 +14,8 @@ import { useRouter } from "vue-router"
 
         
     const loginUser = ref({
-    userId: "",
-    userPwd: "",
+        userId: "",
+        userPwd: "",
     })
 
     const login = async () => {
