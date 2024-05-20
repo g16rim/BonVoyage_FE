@@ -7,6 +7,14 @@
           <div class="min-w-0 flex-auto">
             <p class="text-sm font-semibold leading-6 text-gray-900">{{ person.name }}</p>
             <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ person.email }}</p>
+            <button type="button" @click="moveCreate"
+              class="px-8 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg">
+              멤버 추가
+            </button>
+            <button type="button" @click="moveCreate"
+              class="px-8 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg">
+              여행 계획 추가
+            </button>
           </div>
         </div>
         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">

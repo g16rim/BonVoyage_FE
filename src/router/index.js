@@ -10,6 +10,8 @@ import RecommendView from "@/components/call/Recommend.vue"
 import YoutubeView from "@/components/call/Youtube.vue"
 import MyGroupView from "@/views/MyGroupView.vue"
 import ParentView from "@/components/record/ParentComponent.vue"
+import JoinView from "@/views/JoinView.vue"
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +65,11 @@ const router = createRouter({
       path: '/mypage',
       name: 'mypage',
       component: MyPageView
+    },
+    {
+      path: '/join',
+      name: 'join',
+      component: JoinView
     },
     {
       path: '/group',

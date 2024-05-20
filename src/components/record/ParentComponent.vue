@@ -52,6 +52,7 @@ const handleFileChange = (file) => {
   selectedFile.value = file;
   console.log('Selected file:', selectedFile.value);
 };
+console.log("concept =", groupConcept.value)
 
 const submitGroup = async () => {
   const request = {
