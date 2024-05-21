@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { fetchMembers } from '@/components/record/ListRecord.vue'; 
 const { VITE_BASE_URL } = import.meta.env
 const isModalOpen = ref(false);
 const currentPage = ref(0);
@@ -72,6 +73,7 @@ const submitGroup = async () => {
     if (response.status === 201) {
       alert('그룹이 성공적으로 생성되었습니다.');
       toggleModal();
+      fetchMembers();
     }
   } catch (error) {
     console.error('그룹 생성 중 오류 발생:', error);
