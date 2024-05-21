@@ -27,18 +27,21 @@ console.log("other navbar 로그인 상태: ", isLogin.value)
                         <li class="dropdown-li">
                             <hr class="dropdown-divider" />
                         </li>
-                        <li class="dropdown-li"><a class="dropdown-item luckiest-guy-regular" href="#">My Page</a>
+                        <li class="dropdown-li">
+                            <router-link class="dropdown-item luckiest-guy-regular" :to="{ name: 'mypage' }">
+                                My Page
+                            </router-link>
                         </li>
                         <li class="dropdown-li">
                             <hr class="dropdown-divider" />
                         </li>
                         <li class="dropdown-li">
                             <router-link class="dropdown-item luckiest-guy-regular"
-                                :to="{ name: '' }">Group</router-link>
+                                :to="{ name: 'group' }">Group</router-link>
                             <router-link class="dropdown-item luckiest-guy-regular"
                                 :to="{ name: 'plan-list' }">Plan</router-link>
                             <router-link class="dropdown-item luckiest-guy-regular"
-                                :to="{ name: 'plan-list' }">Record</router-link>
+                                :to="{ name: 'record' }">Record</router-link>
                         </li>
                     </ul>
                 </div>
