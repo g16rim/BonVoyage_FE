@@ -24,11 +24,7 @@ onMounted(() => {
     getPlan(
       planId,
       ({ data }) => {
-        plan.value = {
-          ...data,
-          startDate: new Date(data.startDate),
-          endDate: new Date(data.endDate)
-        }
+        plan.value = data
       },
       (error) => {
         console.log(error)
@@ -43,7 +39,7 @@ function onSubmit() {
 
 function registPlan() {
   createPlan(
-    1, // TODO groupId
+    route.params, // groupId
     plan.value,
     (response) => {
       let msg = "계획 등록 시 문제 발생했습니다."
@@ -53,6 +49,10 @@ function registPlan() {
     },
     (error) => console.log(error)
   )
+}
+
+function moveDetail() {
+  router.push({ name: 'detail-create', params: { planId } })
 }
 
 function modifyPlan() {
@@ -82,7 +82,7 @@ const dateError = computed(() => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center p-12">
+  <div class="flex items-center justify-center p-10">
     <div class="mx-auto w-full max-w-[550px]">
       <form @submit.prevent="onSubmit">
         <!-- 제목 입력란 -->

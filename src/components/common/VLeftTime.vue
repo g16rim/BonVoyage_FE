@@ -8,7 +8,7 @@ const props = defineProps({
   }
 })
 
-const displayText = ref("");
+const displayText = ref('D-');
 
 const updateDisplayText = () => {
   const ddayDate = new Date(props.dday);
@@ -26,7 +26,7 @@ const updateDisplayText = () => {
     return;
   }
 
-  if (ddayDate === today) {
+  if (ddayDate.getFullYear === today.getFullYear && ddayDate.getMonth === today.getMonth && ddayDate.getDay === today.getDay) {
     displayText.value = "D-Day";
   } else if (gap < 0) {  // 이미 지난 경우
     displayText.value = `D+${Math.abs(days) - 1}`;

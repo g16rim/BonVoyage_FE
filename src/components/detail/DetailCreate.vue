@@ -176,7 +176,114 @@ const findAndSave = () => {
 </script>
 
 <template>
-    <div class="container-fluid">
+    <div class="container">
+        <div class="flex items-center justify-center w-full">
+            <div class="w-full max-w-full overflow-hidden rounded-2xl p-0 shadow-lg md:mx-auto">
+                <div class="flex flex-col lg:flex-row">
+                    <div class="relative h-64 w-full flex-none sm:h-80 lg:h-auto lg:w-1/3 xl:w-2/5">
+                        <!-- 지도 -->
+                        <KakaoMap :lat="37.5012647456244" :lng="127.03958123605" class="h-full w-full" :clickable="true"
+                            @onLoadKakaoMap="onLoadKakaoMap" />
+
+                        <!-- 검색 요소들 -->
+                        <div class="absolute top-0 left-0 w-full p-4 flex flex-col space-y-2 bg-transparent">
+                            <select v-model="param.areaCode" class="bg-transparent text-white">
+                                <option disabled value="">지역</option>
+                                <option value="1">서울</option>
+                                <option value="2">인천</option>
+                                <option value="3">대전</option>
+                                <option value="4">대구</option>
+                                <option value="5">광주</option>
+                                <option value="6">부산</option>
+                                <option value="7">울산</option>
+                                <option value="8">세종특별자치시</option>
+                                <option value="31">경기도</option>
+                                <option value="32">강원특별자치도</option>
+                                <option value="33">충청북도</option>
+                                <option value="34">충청남도</option>
+                                <option value="35">경상북도</option>
+                                <option value="36">경상남도</option>
+                                <option value="37">전북특별자치도</option>
+                                <option value="38">전라남도</option>
+                                <option value="39">제주도</option>
+                                <option value="">선택 안 함</option>
+                            </select>
+                            <select v-model="param.contentTypeId" class="bg-transparent text-white">
+                                <option disabled value="">여행지 유형</option>
+                                <option value="12">관광지</option>
+                                <option value="32">숙박</option>
+                                <option value="39">음식점</option>
+                                <option value="14">문화시설</option>
+                                <option value="15">축제·공연·행사</option>
+                                <option value="25">여행 코스</option>
+                                <option value="28">레포츠</option>
+                                <option value="38">쇼핑</option>
+                                <option value="">선택 안 함</option>
+                            </select>
+                            <input v-model="param.keyword" @keyup.enter="getPlaces" placeholder="검색..."
+                                class="bg-transparent text-white placeholder-white border-b border-white outline-none" />
+                        </div>
+                        <!-- 지도 -->
+                        <KakaoMap :lat="37.5012647456244" :lng="127.03958123605" style="height: 550px; width: 100%;"
+                            :clickable="true" @onLoadKakaoMap="onLoadKakaoMap" />
+                        <select v-model="param.areaCode" class="bg-transparent">
+                            <option disabled value="">지역</option>
+                            <option value="1">서울</option>
+                            <option value="2">인천</option>
+                            <option value="3">대전</option>
+                            <option value="4">대구</option>
+                            <option value="5">광주</option>
+                            <option value="6">부산</option>
+                            <option value="7">울산</option>
+                            <option value="8">세종특별자치시</option>
+                            <option value="31">경기도</option>
+                            <option value="32">강원특별자치도</option>
+                            <option value="33">충청북도</option>
+                            <option value="34">충청남도</option>
+                            <option value="35">경상북도</option>
+                            <option value="36">경상남도</option>
+                            <option value="37">전북특별자치도</option>
+                            <option value="38">전라남도</option>
+                            <option value="39">제주도</option>
+                            <option value="">선택 안 함</option>
+                        </select>
+                        <select v-model="param.contentTypeId">
+                            <option disabled value="">여행지 유형</option>
+                            <option value="12">관광지</option>
+                            <option value="32">숙박</option>
+                            <option value="39">음식점</option>
+                            <option value="14">문화시설</option>
+                            <option value="15">축제·공연·행사</option>
+                            <option value="25">여행 코스</option>
+                            <option value="28">레포츠</option>
+                            <option value="38">쇼핑</option>
+                            <option value="">선택 안 함</option>
+                        </select>
+                        <input v-model="param.keyword" @keyup.enter="getPlaces" placeholder="검색..." />
+                    </div>
+                    <div class="w-full">
+                        <div class="p-8">
+                            <span
+                                class="absolute inset-x-0 bottom-0 block h-16 w-full bg-gradient-to-t from-white to-transparent lg:inset-y-0 lg:right-auto lg:hidden lg:h-full lg:w-16 lg:bg-gradient-to-r"></span>
+
+                            <!-- vue draggable -->
+                            할로
+                            <!-- action buttons -->
+                            <div class="mt-8 flex items-center justify-end gap-4 text-sm font-bold">
+                                <button @click="moveList"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">목록</button>
+                                <button
+                                    class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">수정</button>
+                                <button
+                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">삭제</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
                 <select v-model="param.areaCode">
@@ -231,11 +338,11 @@ const findAndSave = () => {
                                 <div>주소: <span>{{ markerInfo.addr1 }}</span></div>
                             </li>
                         </template>
-                    </draggable>
-                </div>
-            </div>
-        </div>
-    </div>
+</draggable>
+</div>
+</div>
+</div>
+</div> -->
 </template>
 
 <style scoped></style>
