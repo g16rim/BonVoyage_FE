@@ -17,6 +17,8 @@ const plan = ref({
   planTitle: ''
 });
 
+const { planId } = route.params
+
 onMounted(() => {
   if (props.type === 'update') {
     let { planId } = route.params
@@ -45,7 +47,7 @@ function registPlan() {
       let msg = "계획 등록 시 문제 발생했습니다."
       if (response.status == 201) msg = "계획 등록이 완료되었습니다."
       alert(msg)
-      moveList()
+      moveDetail()
     },
     (error) => console.log(error)
   )
@@ -53,6 +55,10 @@ function registPlan() {
 
 function moveDetail() {
   router.push({ name: 'detail-create', params: { planId } })
+}
+
+function moveDetailModify() {
+  router.push({ name: 'detail-modify', params: { planId } })
 }
 
 function modifyPlan() {
@@ -64,7 +70,7 @@ function modifyPlan() {
       let msg = "계획 수정 시 문제 발생했습니다."
       if (response.status == 200) msg = "계획 수정이 완료되었습니다."
       alert(msg)
-      moveList()
+      moveDetailModify()
     },
     (error) => console.log(error)
   )

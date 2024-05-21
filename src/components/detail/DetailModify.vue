@@ -7,7 +7,7 @@ import DetailMapItem from '@/components/detail/item/DetailMapItem.vue'
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 text-start">
-                <DetailMapItem type="create" />
+                <DetailMapItem type="update" />
             </div>
         </div>
     </div>

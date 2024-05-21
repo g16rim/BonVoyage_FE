@@ -122,7 +122,8 @@ const activeTab = ref(1)
               <div class="mt-8 flex items-center justify-end gap-4 text-sm font-bold">
                 <button @click="moveList"
                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">목록</button>
-                <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">수정</button>
+                <button @click="moveModify"
+                  class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">수정</button>
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">삭제</button>
               </div>
             </div>
