@@ -2,7 +2,10 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getPlan, deletePlan } from '@/api/plan.js'
+import { listDetailPlan } from '@/api/site.js'
 import VLeftTime from '@/components/common/VLeftTime.vue'
+import DetailView from '@/components/detail/DetailView.vue'
+import DetailListItem from "@/components/detail/item/DetailListItem.vue"
 
 const route = useRoute()
 const router = useRouter()
@@ -10,9 +13,11 @@ const router = useRouter()
 const { planId } = route.params
 
 const plan = ref({})
+const plans = ref([])
 
 onMounted(() => {
   showPlan()
+  getDetailPlans()
 })
 
 const showPlan = () => {
@@ -52,79 +57,74 @@ function onDeletePlan() {
   )
 }
 
+// 목록 가져오기
+const getDetailPlans = async () => {
+  await listDetailPlan(
+    planId,
+    ({ data }) => {
+      plans.value = data
+    },
+    (error) => {
+      console.error(error)
+    }
+  )
+}
+
+const activeTab = ref(1)
 </script>
 
 <template>
   <div class="container">
-    <div class="max-w-xl mx-auto bg-white rounded-xl shadow-md overflow-hidden lg:max-w-4xl xl:max-w-6xl">
-      <div class="flex justify-between items-center p-8"> <!-- 여기에 flex와 items-center를 추가 -->
-        <!-- planTitle을 별도의 행으로 추가하고 크기를 조정 -->
-        <div class="text-xl font-bold">{{ plan.planTitle }}</div> <!-- text-xl과 font-bold로 변경 -->
-        <!-- VLeftTime 컴포넌트를 크고 초록색으로 표시하고 크기를 조정 -->
-        <div class="text-xl font-bold" style="color: #32a852;"> <!-- text-xl과 font-bold로 변경 -->
-          <VLeftTime :dday="plan.startDate" />
-        </div>
-      </div>
-      <div class="p-8 flex justify-between">
-        <div>
-          <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black">여행 기간: {{ plan.startDate }} - {{
-            plan.endDate }}</a>
-          <p class="mt-2 text-gray-500">예산: {{ plan.budget }}원</p>
-        </div>
-        <!-- 이미지 추가 -->
-        <img src="/src/assets/loading.gif" alt="설명" class="w-24 h-24 object-cover rounded-full">
-      </div>
-      <!-- 버튼 추가 -->
-      <div class="mt-4">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">지도</button>
-        <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">수정</button>
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">삭제</button>
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">목록</button>
-      </div>
-    </div>
-
-    <div class="row mt-5">
-      <VLeftTime :dday="plan.startDate" />
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h5>{{ plan.planTitle }}</h5>
+    <!-- VLeftTime 컴포넌트를 크고 초록색으로 표시하고 크기를 조정 -->
+    <div class="flex items-center justify-center w-full">
+      <div class="w-full max-w-full overflow-hidden rounded-2xl p-0 shadow-lg md:mx-auto">
+        <div class="flex flex-col lg:flex-row">
+          <div class="relative h-64 w-full flex-none sm:h-80 lg:h-auto lg:w-1/3 xl:w-2/5">
+            <!-- 지도 -->
+            <DetailView />
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-8">
-                <img src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" alt="User" width="50"
-                  height="50" class="me-2" />
-                <p>
-                  <span class="fw-bold">plan id: {{ planId }}</span> <br />
-                  <span class="text-secondary fw-light">
-                    {{ plan.startDate }} ~ {{ plan.endDate }} <br />
-                    예산: {{ plan.budget }}원
-                  </span>
-                </p>
+          <div class="w-full">
+            <div class="p-8">
+              <span
+                class="absolute inset-x-0 bottom-0 block h-16 w-full bg-gradient-to-t from-white to-transparent lg:inset-y-0 lg:right-auto lg:hidden lg:h-full lg:w-16 lg:bg-gradient-to-r"></span>
+              <!-- d-day -->
+              <div class="relative m-4 flex flex-wrap justify-end text-xl font-bold text-white lg:justify-start">
+                <div class="rounded bg-green-500 px-4 py-1">
+                  <VLeftTime :dday="plan.startDate" />
+                </div>
               </div>
-              <div class="col-md-4 align-self-center text-end">
-                그룹 ID: {{ plan.groupId }}
+              <!-- title -->
+              <div class="flex items-start justify-between">
+                <h3 class="mb-8 text-xl font-bold" onClick="test">{{ plan.planTitle }}</h3>
               </div>
-            </div>
-            <div class="divider mb-3"></div>
-            <div class="text-secondary">
-              {{ plan.content }}
-            </div>
-            <div class="divider mt-3 mb-3"></div>
-            <div class="d-flex justify-content-end">
-              <button type="button" class="btn btn-outline-primary mb-3" @click="moveDetail">
-                상세 계획
-              </button>
-              <button type="button" class="btn btn-outline-primary mb-3 ms-1" @click="moveList">
-                계획 목록
-              </button>
-              <button type="button" class="btn btn-outline-success mb-3 ms-1" @click="moveModify">
-                계획 수정
-              </button>
-              <button type="button" class="btn btn-outline-danger mb-3 ms-1" @click="onDeletePlan">
-                계획 삭제
-              </button>
+              <!-- tabs -->
+              <div class="relative">
+                <header class="flex items-end text-sm">
+                  <button
+                    class="rounded-tl-md border border-b-0 px-3 py-1 text-sm focus:outline-none luckiest-guy-regular"
+                    :class="activeTab === 1 ? 'active-tab' : ''" @click="activeTab = 1">plan</button>
+                  <button class="rounded-tr-md border border-b-0 px-3 py-1 focus:outline-none luckiest-guy-regular"
+                    :class="activeTab === 2 ? 'active-tab' : ''" @click="activeTab = 2">map</button>
+                </header>
+                <div class="h-80 w-full overflow-y-auto rounded-b-xl rounded-tr-xl border p-2" id="tabs-contents">
+                  <div v-if="activeTab === 1">
+                    <p class="block mt-5 text-lg leading-tight font-medium text-black">
+                      {{ plan.startDate }} - {{ plan.endDate }}
+                    </p>
+                    <p class="mt-2 text-gray-500">예산: {{ plan.budget }}원</p>
+                  </div>
+                  <div v-if="activeTab === 2">
+                    <DetailListItem :plans="plans" />
+                  </div>
+                </div>
+              </div>
+              <!-- action buttons -->
+              <div class="mt-8 flex items-center justify-end gap-4 text-sm font-bold">
+                <button @click="moveList"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">목록</button>
+                <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">수정</button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">삭제</button>
+              </div>
             </div>
           </div>
         </div>
@@ -133,4 +133,8 @@ function onDeletePlan() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.active-tab {
+  font-weight: bold;
+}
+</style>

@@ -75,18 +75,17 @@ watch(plans, (newPlans) => {
         getMarkerList()
     }
 }, { deep: true })
-
-// bubble bubble
 </script>
 
 <template>
-    <div id="container">
+    <!-- <div id="container">
         <div class="row">
-            <div class="col-md-6">
-                <KakaoMap :lat="37.5030960206" :lng="127.038175715" @onLoadKakaoMap="onLoadKakaoMap">
-                    <KakaoMapMarkerPolyline :markerList="markerList" :showMarkerOrder="true" />
-                </KakaoMap>
-            </div>
+            <div class="col-md-6"> -->
+    <KakaoMap :lat="37.5030960206" :lng="127.038175715" @onLoadKakaoMap="onLoadKakaoMap"
+        style="width: 100%; height: 100%;">
+        <KakaoMapMarkerPolyline :markerList="markerList" :showMarkerOrder="true" />
+    </KakaoMap>
+    <!-- </div>
             <div class="col-md-6">
                 <div class="card" style="height: 30rem; width: 40rem; overflow-y: scroll;">
                     <div v-for="plan in plans" :key="plan.planOrder" class="row g-0">
@@ -104,7 +103,7 @@ watch(plans, (newPlans) => {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <style scoped></style>
