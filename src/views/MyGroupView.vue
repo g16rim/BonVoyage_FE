@@ -1,5 +1,5 @@
 <script setup>
-import NewGroup from "@/components/record/ParentComponent.vue"
+import NewGroup from "@/components/group/ParentComponent.vue"
 import ListGroup from "@/components/group/ListGroup.vue"
 </script>
 

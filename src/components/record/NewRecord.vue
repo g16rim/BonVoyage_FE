@@ -12,18 +12,10 @@ const groupDescription = ref('');
 const groupConcept = ref('');
 
 const pages = [
-  { title: 'Step1. 그룹 이름 정하기', content: '<hr/><input type="text" v-model="groupName" placeholder="그룹 이름을 입력하세요" />' },
-  { title: 'Step2. 그룹 설명 작성', content: '<hr/><textarea v-model="groupDescription" placeholder="그룹 설명을 입력하세요"></textarea>' },
-  { title: 'Step3. 그룹 컨셉 정하기', content: '<hr/><input type="text" v-model="groupConcept" placeholder="그룹 컨셉을 입력하세요" />' },
-  { 
-    title: 'Step4. 그룹 대표 이미지 정하기', 
-    content: `
-      <hr/>
-      <input type="file" id="file-input" @change="handleFileChange" />
-      <p>그룹 대표 이미지를 선택하세요</p>
-    ` 
-  },
-  { title: 'Step5. 그룹 멤버 초대하기', content: '<hr/><p>그룹 설정을 선택하세요</p>' }
+  { title: 'Step1. 여행 계획 가져오기', content: '<hr/><input type="text" v-model="groupName" placeholder="그룹 이름을 입력하세요" />' },
+  { title: 'Step2. 소감 쓰기', content: '<hr/><textarea v-model="groupDescription" placeholder="그룹 설명을 입력하세요"></textarea>' },
+  { title: 'Step3. 이미지 추가하기', content: '<hr/><input type="text" v-model="groupConcept" placeholder="그룹 컨셉을 입력하세요" />' },
+  { title: 'Step4. 지도 간 곳', content: '<hr/><p>그룹 설정을 선택하세요</p>' }
 ];
 
 const toggleModal = () => {
@@ -71,13 +63,13 @@ const submitGroup = async () => {
       },
     });
     if (response.status === 201) {
-      alert('그룹이 성공적으로 생성되었습니다.');
+      alert('여행 기록이 성공적으로 생성되었습니다.');
       toggleModal();
       fetchMembers();
     }
   } catch (error) {
-    console.error('그룹 생성 중 오류 발생:', error);
-    alert('그룹 생성에 실패했습니다.');
+    console.error('여행 기록 생성 중 오류 발생:', error);
+    alert('여행 기록을 실패했습니다.');
   }
 };
 </script>
