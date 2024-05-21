@@ -6,6 +6,8 @@ import { getPlan, createPlan, updatePlan } from "@/api/plan.js"
 const router = useRouter()
 const route = useRoute()
 
+const planId = ref()
+
 const props = defineProps({
   type: String // 'create' or 'update'
 })
@@ -16,8 +18,6 @@ const plan = ref({
   budget: null,
   planTitle: ''
 });
-
-const { planId } = route.params
 
 onMounted(() => {
   if (props.type === 'update') {
@@ -40,13 +40,18 @@ function onSubmit() {
 }
 
 function registPlan() {
+  let { groupId } = route.params
+  console.log(groupId + "그룹아이디 등록")
   createPlan(
-    route.params, // groupId
+    groupId, // groupId
     plan.value,
     (response) => {
       let msg = "계획 등록 시 문제 발생했습니다."
       if (response.status == 201) msg = "계획 등록이 완료되었습니다."
       alert(msg)
+      planId.value = response.data
+      console.log(response)
+      console.log(planId.value)
       moveDetail()
     },
     (error) => console.log(error)
@@ -54,11 +59,11 @@ function registPlan() {
 }
 
 function moveDetail() {
-  router.push({ name: 'detail-create', params: { planId } })
+  router.push({ name: 'detail-create', params: { planId: planId.value } })
 }
 
 function moveDetailModify() {
-  router.push({ name: 'detail-modify', params: { planId } })
+  router.push({ name: 'detail-modify', params: { planId: planId.value } })
 }
 
 function modifyPlan() {

@@ -13,7 +13,6 @@ function listPlan(success, fail) {
 }
 
 function createPlan(groupId, plan, success, fail) {
-    console.log("plan.js plan", plan);
     local.post(`/plan/${groupId}`, JSON.stringify(plan)).then(success).catch(fail)
 }
 
