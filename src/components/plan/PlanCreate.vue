@@ -6,18 +6,11 @@ import PlanFormItem from "./item/PlanFormItem.vue"
 <template>
     <div class="container">
         <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-            <mark class="sky">계획 등록</mark>
-            </h2>
-        </div>
-        <div class="col-lg-10 text-start">
-            <PlanFormItem type="create" />
-        </div>
+            <div class="col-lg-10 text-start">
+                <PlanFormItem type="create" />
+            </div>
         </div>
     </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

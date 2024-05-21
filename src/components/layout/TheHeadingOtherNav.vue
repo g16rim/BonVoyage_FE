@@ -22,7 +22,8 @@ console.log("other navbar 로그인 상태: ", isLogin.value)
                         <img src="/src/assets/logo/bubble.png" alt="my-menu" style="width: 50px; height: 50px" />
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" style="font-size: 20px; background-color: #9cd7ff;">
-                        <li class="dropdown-li text-center">{{ userInfo.grade.grade }}, <br />{{ userInfo.username }} 님
+                        <li class="dropdown-li text-center">
+                            {{ userInfo.grade.grade }}, <br />{{ userInfo.username }} 님
                         </li>
                         <li class="dropdown-li">
                             <hr class="dropdown-divider" />
@@ -42,6 +43,12 @@ console.log("other navbar 로그인 상태: ", isLogin.value)
                                 :to="{ name: 'plan-list' }">Plan</router-link>
                             <router-link class="dropdown-item luckiest-guy-regular"
                                 :to="{ name: 'record' }">Record</router-link>
+                        </li>
+                        <li class="dropdown-li">
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li class="dropdown-li luckiest-guy-regular">
+                            <span class="dropdown-item">Logout</span>
                         </li>
                     </ul>
                 </div>
