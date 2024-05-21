@@ -76,7 +76,7 @@ const router = createRouter({
       component: () => import("@/views/PlanView.vue"),
       children: [
         {
-          path: "create",
+          path: "create/:groupId",
           name: "plan-create",
           component: () => import("@/components/plan/PlanCreate.vue"),
         },

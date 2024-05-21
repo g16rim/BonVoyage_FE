@@ -12,7 +12,7 @@
               class="px-8 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg">
               멤버 추가
             </button>
-            <button type="button" @click="moveCreate"
+            <button type="button" @click="moveCreate(team.id)"
               class="px-8 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg">
               여행 계획 추가
             </button>
@@ -38,19 +38,24 @@
     </ul>
 
     <!-- 모달 창 -->
-    <div v-if="modalOpen" class="modal-overlay fixed inset-0 overflow-y-auto flex justify-center items-center bg-black bg-opacity-50" @click="closeModal">
+    <div v-if="modalOpen"
+      class="modal-overlay fixed inset-0 overflow-y-auto flex justify-center items-center bg-black bg-opacity-50"
+      @click="closeModal">
       <div class="modal-content flex justify-center items-center min-h-screen w-full" @click.stop>
         <div class="bg-white w-1/2 p-8 rounded-lg shadow-lg">
           <h2 class="text-lg font-bold mb-4">새 멤버 추가</h2>
           <div class="mb-4">
             <label for="newMemberEmail" class="block text-sm font-medium text-gray-700">이메일</label>
-            <input type="email" v-model="newMemberEmail" id="newMemberEmail" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            <input type="email" v-model="newMemberEmail" id="newMemberEmail"
+              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
           </div>
           <div class="flex justify-end">
-            <button @click="closeModal" type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <button @click="closeModal" type="button"
+              class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
               닫기
             </button>
-            <button @click="addMember" type="button" class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <button @click="addMember" type="button"
+              class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
               추가
             </button>
           </div>
@@ -61,7 +66,9 @@
       </div>
     </div>
 
-    <div v-if="infoModalOpen" class="modal-overlay fixed inset-0 overflow-y-auto flex justify-center items-center bg-black bg-opacity-50" @click="closeInfoModal">
+    <div v-if="infoModalOpen"
+      class="modal-overlay fixed inset-0 overflow-y-auto flex justify-center items-center bg-black bg-opacity-50"
+      @click="closeInfoModal">
       <div class="modal-content flex justify-center items-center min-h-screen w-full" @click.stop>
         <div class="bg-white w-1/2 p-8 rounded-lg shadow-lg">
           {{ selectedTeam?.groupProfileImage }}
@@ -73,7 +80,8 @@
             <p><strong>멤버:</strong> {{ selectedTeam?.owner }}</p>
           </div>
           <div class="flex justify-end">
-            <button @click="closeInfoModal" type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <button @click="closeInfoModal" type="button"
+              class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
               닫기
             </button>
           </div>
@@ -86,6 +94,9 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 // Function to get accessToken from sessionStorage
 const getAccessToken = () => {
@@ -186,6 +197,10 @@ const handleEscapeKey = (event) => {
     closeInfoModal();
   }
 };
+
+const moveCreate = (teamId) => {
+  router.push({ name: 'plan-create', params: { groupId: teamId } })
+}
 </script>
 
 
