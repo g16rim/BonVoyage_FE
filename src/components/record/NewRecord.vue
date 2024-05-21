@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { fetchMembers } from '@/components/record/ListRecord.vue'; 
+
 const { VITE_BASE_URL } = import.meta.env
 const isModalOpen = ref(false);
 const currentPage = ref(0);
@@ -210,6 +210,7 @@ const submitGroup = async () => {
     transform: translateX(-50%);
 	opacity: 0.75;
 	overflow: visible;
+
 }
 
 .bubbles {
@@ -217,16 +218,22 @@ const submitGroup = async () => {
 	height: auto;
 	
 	circle {
-		stroke: white;
-		fill: none;
+		stroke: rgba(0, 0, 0, 0.089);
+		fill: white;
 	}
-	
+	> g > g:nth-of-type(2n) circle {
+		stroke: rgb(180, 188, 224);
+    fill: rgb(180, 188, 224);
+	}
+
 	> g > g:nth-of-type(3n) circle {
-		stroke: #87f5fb;
+		stroke: rgb(87, 190, 238);
+    fill: rgb(87, 190, 238);
 	}
 	
 	> g > g:nth-of-type(4n) circle {
-		stroke: #8be8cb;
+		stroke: #11b2f1;
+    fill: #11b2f1;
 	}
 	
 }
@@ -306,13 +313,7 @@ const submitGroup = async () => {
 	}
 
 }
-.bubbles-large circle {
-  fill: #ffcc00; /* 버블의 큰 원의 색상 변경 */
-}
 
-.bubbles-small circle {
-  fill: #ffcc00; /* 버블의 작은 원의 색상 변경 */
-}
 
 .bubbles-small {
 	overflow: visible;
@@ -496,7 +497,8 @@ const submitGroup = async () => {
   text-align: center;
   border: 1px solid black;
   margin-bottom: 7%;
-  background-color: rgb(255, 255, 255);
+  background-color: white;
+
 }
 
 .svg-wrapper {
@@ -505,6 +507,7 @@ const submitGroup = async () => {
   justify-content: center;
   height: 100%;
   cursor: pointer;
+ 
 }
 
 .modal-overlay {
@@ -567,5 +570,13 @@ const submitGroup = async () => {
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.bubbles-large circle {
+  fill: red; /* 버블의 큰 원의 색상 변경 */
+}
+
+.bubbles-small circle {
+  fill: #ffcc00; /* 버블의 작은 원의 색상 변경 */
 }
 </style>

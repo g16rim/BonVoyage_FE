@@ -8,7 +8,7 @@ import MyPageView from "@/views/MyPageView.vue"
 import RecommendView from "@/components/call/Recommend.vue"
 import YoutubeView from "@/components/call/Youtube.vue"
 import MyGroupView from "@/views/MyGroupView.vue"
-import ParentView from "@/components/record/ParentComponent.vue"
+import RecordView from "@/views/RecordView.vue"
 import JoinView from "@/views/JoinView.vue"
 
 
@@ -43,7 +43,7 @@ const router = createRouter({
     {
       path: '/record',
       name: 'record',
-      component: ParentView
+      component: RecordView
     },
     {
       path: '/music',
