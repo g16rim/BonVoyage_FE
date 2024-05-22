@@ -124,10 +124,10 @@ const dayDiff = computed(() => {
                     </p>
 
                     <p class="mt-4">
-                      <!-- 시작일 - 종료일 표시 -->
-                      {{ plan.startDate }} ~ {{ plan.endDate }}
+                      <!-- 시작일 - 종료일 표시 조건부 렌더링 -->
+                      {{ plan.startDate }} <span v-if="plan.startDate !== plan.endDate">~ {{ plan.endDate }}</span>
                     </p>
-                    <p class="mt-4">{{ plan.budget ? plan.budget.toLocaleString() : '알 수 없음' }}원</p>
+                    <p class="mt-4">{{ plan.budget ? plan.budget.toLocaleString() : 0 }}원</p>
                     <VTag class="mt-12" />
                   </div>
                   <div v-if="activeTab === 2">
