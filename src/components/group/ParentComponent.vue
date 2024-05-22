@@ -52,7 +52,7 @@ const handleFileChange = (file) => {
   selectedFile.value = file;
   console.log('Selected file:', selectedFile.value);
 };
-console.log("concept =", groupConcept.value)
+
 
 const submitGroup = async () => {
   const request = {
@@ -60,7 +60,8 @@ const submitGroup = async () => {
     description: groupDescription.value,
     preference: groupConcept.value
   };
-
+  console.log(request);
+  console.log("concept =", groupConcept.value)
   const formData = new FormData();
   formData.append('request', new Blob([JSON.stringify(request)], { type: 'application/json' }));
 

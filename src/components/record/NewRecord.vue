@@ -1,6 +1,11 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import Step1 from './Step1.vue';
+import Step2 from './Step2.vue';
+import Step3 from './Step3.vue';
+import Step4 from './Step4.vue';
+import Step5 from './Step5.vue';
 
 const { VITE_BASE_URL } = import.meta.env
 const isModalOpen = ref(false);
@@ -12,10 +17,11 @@ const groupDescription = ref('');
 const groupConcept = ref('');
 
 const pages = [
-  { title: 'Step1. 여행 계획 가져오기', content: '<hr/><input type="text" v-model="groupName" placeholder="그룹 이름을 입력하세요" />' },
-  { title: 'Step2. 소감 쓰기', content: '<hr/><textarea v-model="groupDescription" placeholder="그룹 설명을 입력하세요"></textarea>' },
-  { title: 'Step3. 이미지 추가하기', content: '<hr/><input type="text" v-model="groupConcept" placeholder="그룹 컨셉을 입력하세요" />' },
-  { title: 'Step4. 지도 간 곳', content: '<hr/><p>그룹 설정을 선택하세요</p>' }
+  { title: 'Step1. 그룹 선택', component: Step1 },
+  { title: 'Step2. 기록할 여행 계획 선택', component: Step2 },
+  { title: 'Step3. 소감 쓰기', component: Step3 },
+  { title: 'Step4. 이미지 추가하기', component: Step4 },
+  { title: 'Step5. 지도 간 곳', component: Step5 },
 ];
 
 const toggleModal = () => {
@@ -46,32 +52,38 @@ const handleFileChange = (event) => {
 };
 
 const submitGroup = async () => {
+  const request = {
+    name: groupName.value,
+    description: groupDescription.value,
+    preference: groupConcept.value
+  };
   const formData = new FormData();
-  console.log("groupName = ", groupName.value,"is");
-  formData.append('groupName', groupName.value);
-  formData.append('groupDescription', groupDescription.value);
-  formData.append('groupConcept', groupConcept.value);
+  formData.append('request', new Blob([JSON.stringify(request)], { type: 'application/json' }));
+
   if (selectedFile.value) {
     formData.append('file', selectedFile.value);
   }
 
+
   try {
-    console.log("form = ",formData.get('groupName'));
-    const response = await axios.post(VITE_BASE_URL+'/teams', formData, {
+    console.log("accessToken = ", accessToken)
+    const response = await axios.post(VITE_BASE_URL + '/teams', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'multipart/form-data'
+      }
     });
     if (response.status === 201) {
-      alert('여행 기록이 성공적으로 생성되었습니다.');
+      alert('그룹이 성공적으로 생성되었습니다.');
       toggleModal();
-      fetchMembers();
     }
   } catch (error) {
-    console.error('여행 기록 생성 중 오류 발생:', error);
-    alert('여행 기록을 실패했습니다.');
+    console.error('그룹 생성 중 오류 발생:', error);
+    alert('그룹 생성에 실패했습니다.');
   }
 };
+
+
 </script>
 
 <template>
@@ -180,7 +192,15 @@ const submitGroup = async () => {
   <div v-if="isModalOpen" class="modal-overlay" @click="toggleModal">
     <div class="modal-content" @click.stop>
       <h2>{{ pages[currentPage].title }}</h2>
-      <div v-html="pages[currentPage].content"></div>
+      <component :is="pages[currentPage].component"
+        v-bind:groupName="groupName"
+        v-bind:groupDescription="groupDescription"
+        v-bind:groupConcept="groupConcept"
+        @update:groupName="groupName = $event"
+        @update:groupDescription="groupDescription = $event"
+        @update:groupConcept="groupConcept = $event"
+        @update:file="handleFileChange"
+      />
       <div class="modal-navigation">
         <button v-if="currentPage > 0" class="prev-button" @click="prevPage">이전</button>
         <button v-if="currentPage < pages.length - 1" class="next-button" @click="nextPage">다음</button>
@@ -191,15 +211,17 @@ const submitGroup = async () => {
   </div>
 </template>
 <style scoped>
-
+h2{
+  text-align: center;
+}
 
 .bubbles-container {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 100%;
-    max-width: 15rem;
-    transform: translateX(-50%);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  max-width: 15rem;
+  transform: translateX(-50%);
 	opacity: 0.75;
 	overflow: visible;
 

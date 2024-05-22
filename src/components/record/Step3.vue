@@ -1,11 +1,8 @@
 <template>
   <div>
     <hr/>
-    <div class="preferences">
-      <button v-for="option in preferences" :key="option" :class="{ selected: option === localGroupConcept }" @click="selectGroupConcept(option)">
-        {{ option }}
-      </button>
-    </div>
+      <textarea v-model="localGroupDescription" @input="updateGroupDescription" placeholder="여행 소감을 입력하세요"></textarea>
+    
   </div>
 </template>
 
@@ -31,7 +28,6 @@ watch(() => props.groupConcept, (newVal) => {
 const selectGroupConcept = (option) => {
   localGroupConcept.value = option;
   emits('update:groupConcept', localGroupConcept.value);
- 
 };
 </script>
 
