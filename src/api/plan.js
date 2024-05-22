@@ -28,10 +28,15 @@ function deletePlan(planId, success, fail) {
     local.delete(`/plan/${planId}`).then(success).catch(fail)
 }
 
+function getPlanGroupInfo(planId, success, fail) {
+    local.get(`/teams/info/${planId}`).then(success).catch(fail)
+}
+
 export {
     listPlan,
     createPlan,
     getPlan,
     updatePlan,
     deletePlan,
+    getPlanGroupInfo
 }

@@ -2,7 +2,7 @@
 import { KakaoMap } from 'vue3-kakao-maps';
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { searchPlaces, checkSitesExisting, registDetailPlan } from '@/api/site.js'
+import { searchPlaces, checkSitesExisting, registDetailPlan, listDetailPlan } from '@/api/site.js'
 import draggable from 'vuedraggable'
 
 const route = useRoute()
@@ -27,7 +27,7 @@ const transformedMarkers = ref([]) // db insert용 배열
 
 onMounted(() => {
     if (props.type === 'update') {
-        // get하기
+        findAndModify()
     }
     if (markerInfoList.value.length > 0) drawMarkers()
 })
@@ -50,7 +50,12 @@ const drawMarkers = () => {
     markerObjects.value = []
 
     markerInfoList.value.forEach((markerInfo) => {
-        point = new kakao.maps.LatLng(markerInfo.mapy, markerInfo.mapx)
+        if (props.type === 'update') {
+            point = new kakao.maps.LatLng(markerInfo.latitude, markerInfo.longitude)
+        } else { // create
+            point = new kakao.maps.LatLng(markerInfo.mapy, markerInfo.mapx)
+        }
+
         marker = new kakao.maps.Marker({ position: point })
         if (map.value !== undefined) {
             marker.setMap(map.value)
@@ -181,7 +186,19 @@ const findAndSave = () => {
 }
 
 const findAndModify = () => {
-    console.log("수정 구현")
+    listDetailPlan(
+        planId,
+        (response) => {
+            console.log(response.data)
+            markerInfoList.value = response.data
+            selectedMarkers.value = response.data
+            console.log(markerInfoList.value)
+            drawMarkers()
+        },
+        (error) => {
+            console.error("수정 시 목록 조회 실패:", error)
+        }
+    )
 }
 
 // router 관련
@@ -247,17 +264,33 @@ const moveList = () => {
                                 class="absolute inset-x-0 bottom-0 block h-16 w-full bg-gradient-to-t from-white to-transparent lg:inset-y-0 lg:right-auto lg:hidden lg:h-full lg:w-16 lg:bg-gradient-to-r"></span>
                             <div class="selected-marker-info">
                                 <div class="max-h-[350px] overflow-y-auto">
-                                    <draggable v-model="selectedMarkers" class="list-group"
-                                        :key="selectedMarkers.contentid" item-key="contentid">
-                                        <template #item="{ element: markerInfo, index }">
-                                            <li class="list-group-item p-2">
-                                                <div class="font-bold text-lg">{{ index + 1 }} {{ markerInfo.title }}
-                                                </div>
-                                                <div class="text-sm text-gray-500">{{ markerInfo.addr1 }} {{
-                                                    markerInfo.addr2 }}</div>
-                                            </li>
-                                        </template>
-                                    </draggable>
+                                    <div v-if="props.type === 'create'">
+                                        <draggable v-model="selectedMarkers" class="list-group"
+                                            :key="selectedMarkers.contentid" item-key="contentid">
+                                            <template #item="{ element: markerInfo, index }">
+                                                <li class="list-group-item p-2">
+                                                    <div class="font-bold text-lg">{{ index + 1 }} {{ markerInfo.title
+                                                        }}
+                                                    </div>
+                                                    <div class="text-sm text-gray-500">{{ markerInfo.addr1 }} {{
+                                                        markerInfo.addr2 }}</div>
+                                                </li>
+                                            </template>
+                                        </draggable>
+                                    </div>
+                                    <div v-else>
+                                        <!-- <draggable v-model="selectedMarkers" class="list-group"
+                                            :key="selectedMarkers.address" item-key="id">
+                                            <template #item="{ element: markerInfo, index }">
+                                                <li class="list-group-item p-2">
+                                                    <div class="font-bold text-lg">{{ index + 1 }} {{ markerInfo.title
+                                                        }}
+                                                    </div>
+                                                    <div class="text-sm text-gray-500">{{ markerInfo.address }}</div>
+                                                </li>
+                                            </template>
+                                        </draggable> -->
+                                    </div>
                                 </div>
                             </div>
                             <!-- action buttons -->

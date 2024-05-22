@@ -6,6 +6,7 @@ import { listDetailPlan } from '@/api/site.js'
 import VLeftTime from '@/components/common/VLeftTime.vue'
 import DetailView from '@/components/detail/DetailView.vue'
 import DetailListItem from "@/components/detail/item/DetailListItem.vue"
+import VTag from '@/components/common/VTag.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -95,7 +96,10 @@ const activeTab = ref(1)
               </div>
               <!-- title -->
               <div class="flex items-start justify-between">
-                <h3 class="mb-8 text-xl font-bold" onClick="test">{{ plan.planTitle }}</h3>
+                <h3 class="mb-8 text-xl font-bold" onClick="test"><!-- 몇 박 며칠 계산 및 표시 -->
+                  {{ ((new Date(plan.endDate) - new Date(plan.startDate)) / (1000 * 60 * 60 * 24)) }}박 {{ ((new
+                    Date(plan.endDate) - new Date(plan.startDate)) / (1000 * 60 * 60 * 24)) + 1 }}일
+                </h3>
               </div>
               <!-- tabs -->
               <div class="relative">
@@ -107,11 +111,18 @@ const activeTab = ref(1)
                     :class="activeTab === 2 ? 'active-tab' : ''" @click="activeTab = 2">map</button>
                 </header>
                 <div class="h-80 w-full overflow-y-auto rounded-b-xl rounded-tr-xl border p-2" id="tabs-contents">
-                  <div v-if="activeTab === 1">
-                    <p class="block mt-5 text-lg leading-tight font-medium text-black">
-                      {{ plan.startDate }} - {{ plan.endDate }}
+                  <div v-if="activeTab === 1" class="text-left pl-4">
+                    <p class="block mt-5 text-3xl leading-tight font-medium text-black">
+                      <!-- 몇 박 며칠 계산 및 표시 -->
+                      {{ plan.planTitle }}
                     </p>
-                    <p class="mt-2 text-gray-500">예산: {{ plan.budget }}원</p>
+
+                    <p class="mt-4">
+                      <!-- 시작일 - 종료일 표시 -->
+                      {{ plan.startDate }} ~ {{ plan.endDate }}
+                    </p>
+                    <p class="mt-4">{{ plan.budget ? plan.budget.toLocaleString() : '알 수 없음' }}원</p>
+                    <VTag class="mt-12" />
                   </div>
                   <div v-if="activeTab === 2">
                     <DetailListItem :plans="plans" />
@@ -124,7 +135,8 @@ const activeTab = ref(1)
                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">목록</button>
                 <button @click="moveModify"
                   class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">수정</button>
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">삭제</button>
+                <button @click="onDeletePlan"
+                  class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">삭제</button>
               </div>
             </div>
           </div>
