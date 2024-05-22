@@ -5,8 +5,6 @@ import SearchBar from "@/components/common/Vsearch.vue"
 import MenuBar from "@/components/plan/MenuSlide.vue"
 import ListFriendView from "@/components/group/ListGroup.vue"
 import MyPageView from "@/views/MyPageView.vue"
-import RecommendView from "@/components/call/Recommend.vue"
-import YoutubeView from "@/components/call/Youtube.vue"
 import MyGroupView from "@/views/MyGroupView.vue"
 import RecordView from "@/views/RecordView.vue"
 import JoinView from "@/views/JoinView.vue"
@@ -44,16 +42,6 @@ const router = createRouter({
       path: '/record',
       name: 'record',
       component: RecordView
-    },
-    {
-      path: '/music',
-      name: 'music',
-      component: RecommendView
-    },
-    {
-      path: '/youtube',
-      name: 'youtube',
-      component: YoutubeView
     },
     {
       path: '/mypage',
@@ -116,6 +104,18 @@ const router = createRouter({
           path: "modify/:planId",
           name: "detail-modify",
           component: () => import("@/components/detail/DetailModify.vue")
+        }
+      ]
+    },
+    {
+      path: '/ai',
+      name: 'ai',
+      component: () => import("@/views/GenAiView.vue"),
+      children: [
+        {
+          path: "music/:planId",
+          name: "ai-music-plan",
+          component: () => import("@/components/ai/Recommend.vue")
         }
       ]
     }

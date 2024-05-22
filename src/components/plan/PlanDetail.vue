@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getPlan, deletePlan } from '@/api/plan.js'
 import { listDetailPlan } from '@/api/site.js'
@@ -72,6 +72,16 @@ const getDetailPlans = async () => {
 }
 
 const activeTab = ref(1)
+
+const submit = () => {
+  router.push({ name: 'ai-music-plan', params: { planId } })
+}
+
+const dayDiff = computed(() => {
+  const start = new Date(plan.value.startDate)
+  const end = new Date(plan.value.endDate)
+  return (end - start) / (1000 * 60 * 60 * 24)
+})
 </script>
 
 <template>
@@ -95,11 +105,18 @@ const activeTab = ref(1)
                 </div>
               </div>
               <!-- title -->
-              <div class="flex items-start justify-between">
-                <h3 class="mb-8 text-xl font-bold" onClick="test"><!-- 몇 박 며칠 계산 및 표시 -->
-                  {{ ((new Date(plan.endDate) - new Date(plan.startDate)) / (1000 * 60 * 60 * 24)) }}박 {{ ((new
-                    Date(plan.endDate) - new Date(plan.startDate)) / (1000 * 60 * 60 * 24)) + 1 }}일
+              <div class="flex items-start">
+                <h3 class="mb-8 text-xl font-bold mr-3" onClick="test">
+                  <!-- 몇 박 며칠 계산 및 표시 -->
+                  {{ dayDiff === 0 ? '당일치기' : `${dayDiff}박 ${dayDiff + 1}일` }}
                 </h3>
+                <button @click="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" />
+                  </svg>
+                </button>
               </div>
               <!-- tabs -->
               <div class="relative">
@@ -118,10 +135,10 @@ const activeTab = ref(1)
                     </p>
 
                     <p class="mt-4">
-                      <!-- 시작일 - 종료일 표시 -->
-                      {{ plan.startDate }} ~ {{ plan.endDate }}
+                      <!-- 시작일 - 종료일 표시 조건부 렌더링 -->
+                      {{ plan.startDate }} <span v-if="plan.startDate !== plan.endDate">~ {{ plan.endDate }}</span>
                     </p>
-                    <p class="mt-4">{{ plan.budget ? plan.budget.toLocaleString() : '알 수 없음' }}원</p>
+                    <p class="mt-4">{{ plan.budget ? plan.budget.toLocaleString() : 0 }}원</p>
                     <VTag class="mt-12" />
                   </div>
                   <div v-if="activeTab === 2">
