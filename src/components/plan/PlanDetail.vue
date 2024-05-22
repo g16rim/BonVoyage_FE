@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getPlan, deletePlan } from '@/api/plan.js'
 import { listDetailPlan } from '@/api/site.js'
@@ -72,6 +72,12 @@ const getDetailPlans = async () => {
 }
 
 const activeTab = ref(1)
+
+const dayDiff = computed(() => {
+  const start = new Date(plan.value.startDate)
+  const end = new Date(plan.value.endDate)
+  return (end - start) / (1000 * 60 * 60 * 24)
+})
 </script>
 
 <template>
@@ -96,9 +102,9 @@ const activeTab = ref(1)
               </div>
               <!-- title -->
               <div class="flex items-start justify-between">
-                <h3 class="mb-8 text-xl font-bold" onClick="test"><!-- 몇 박 며칠 계산 및 표시 -->
-                  {{ ((new Date(plan.endDate) - new Date(plan.startDate)) / (1000 * 60 * 60 * 24)) }}박 {{ ((new
-                    Date(plan.endDate) - new Date(plan.startDate)) / (1000 * 60 * 60 * 24)) + 1 }}일
+                <h3 class="mb-8 text-xl font-bold" onClick="test">
+                  <!-- 몇 박 며칠 계산 및 표시 -->
+                  {{ dayDiff === 0 ? '당일치기' : `${dayDiff}박 ${dayDiff + 1}일` }}
                 </h3>
               </div>
               <!-- tabs -->

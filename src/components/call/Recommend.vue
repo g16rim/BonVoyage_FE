@@ -1,19 +1,8 @@
-<template>
-  <div id="recommend">
-    <h1>노래 추천 검색</h1>
-    <input type="text" v-model="searchText" placeholder="검색어를 입력하세요" />
-    <button @click="fetchSongs">검색</button>
-    <div v-if="loading">검색 중...</div>
-    <div v-if="error">{{ error }}</div>
-    <ul v-if="songs.length > 0">
-      <li v-for="(song, index) in songs" :key="index">{{ song }}</li>
-    </ul>
-  </div>
-</template>
-
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import Youtube from '@/components/call/Youtube.vue'
+
 const { VITE_GOOGLE_SERVICE_KEY } = import.meta.env
 const searchText = ref('');
 const songs = ref([]);
@@ -57,7 +46,23 @@ const fetchSongs = async () => {
 };
 </script>
 
-<style>
+<template>
+  <div id="recommend">
+    <h1>노래 추천 검색</h1>
+    <input type="text" v-model="searchText" placeholder="검색어를 입력하세요" />
+    <button @click="fetchSongs">검색</button>
+    <div v-if="loading">검색 중...</div>
+    <div v-if="error">{{ error }}</div>
+    <!-- <ul v-if="songs.length > 0">
+      <li v-for="(song, index) in songs" :key="index">{{ song }}</li>
+    </ul> -->
+    <div v-if="songs.length > 0">
+      <Youtube :songs="songs" />
+    </div>
+  </div>
+</template>
+
+<style scoped>
 #recommend {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
