@@ -1,29 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 const { VITE_GOOGLE_SERVICE_KEY } = import.meta.env
-// const query = ref('');
 const videos = ref([])
 
 const props = defineProps({
   songs: Array
 })
 
-// const search = async () => {
-//   let serviceKey = VITE_GOOGLE_SERVICE_KEY;
-
-//   let baseUrl = "https://youtube.googleapis.com/youtube/v3/search";
-//   let queryString = `part=snippet&maxResults=1&q=${query.value}&type=video&key=${serviceKey}`;
-
-//   let url = baseUrl + "?" + queryString;
-//   console.log(url);
-//   try {
-//     const response = await fetch(url);
-//     const data = await response.json();
-//     videos.value = data.items;
-//   } catch (error) {
-//     console.error('검색 중 오류 발생:', error);
-//   }
-// };
 const searchSong = async (song) => {
   let serviceKey = VITE_GOOGLE_SERVICE_KEY
 
@@ -55,15 +38,6 @@ onMounted(async () => {
 
 <template>
   <div class="container">
-    <!-- <div class="row justify-content-md-center">
-      <div class="col-auto">
-        <label for="query" class="visually-hidden">검색어</label>
-        <input type="text" class="form-control" v-model="query" placeholder="검색 할 단어..." />
-      </div>
-      <div class="col-auto">
-        <button type="button" class="btn btn-primary mb-3" @click="search">검색</button>
-      </div>
-    </div> -->
     <div id="videoView">
       <div v-for="(video, index) in videos" :key="index" class="row mb-3">
         <div class="col-auto justify-content-center p-3">
