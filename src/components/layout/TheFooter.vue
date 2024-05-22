@@ -4,7 +4,7 @@
 
 <template>
     <div class="footer-container">
-        <div class="py-6 text-2xl mt-12 mx-auto text-center bg-[#e2caa7] luckiest-guy-regular">
+        <div class="py-6 text-2xl mx-auto text-center bg-[#e2caa7] luckiest-guy-regular">
             BON VOYAGE
         </div>
     </div>

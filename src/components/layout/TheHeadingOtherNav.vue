@@ -71,7 +71,7 @@ const logoutBtn = () => {
             </div>
             <div v-else style="display: flex; gap: 10px;">
                 <a href="/login" class="nav-link">로그인</a>
-                <a href="" class="nav-link">
+                <a href="/join" class="nav-link">
                     회원가입
                 </a>
             </div>
