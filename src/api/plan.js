@@ -32,11 +32,16 @@ function getPlanGroupInfo(planId, success, fail) {
     local.get(`/teams/info/${planId}`).then(success).catch(fail)
 }
 
+function modifyOrder(planId, plans, success, fail) {
+    local.put(`/detail/${planId}`, JSON.stringify(plans)).then(success).catch(fail)
+}
+
 export {
     listPlan,
     createPlan,
     getPlan,
     updatePlan,
     deletePlan,
-    getPlanGroupInfo
+    getPlanGroupInfo,
+    modifyOrder
 }

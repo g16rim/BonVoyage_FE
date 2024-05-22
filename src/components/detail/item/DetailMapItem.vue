@@ -27,7 +27,15 @@ const transformedMarkers = ref([]) // db insert용 배열
 
 onMounted(() => {
     if (props.type === 'update') {
-        findAndModify()
+        listDetailPlan(
+            planId,
+            (response) => {
+                selectedMarkers.value = response.data
+            },
+            (error) => {
+                console.error("수정 시 목록 조회 실패:", error)
+            }
+        )
     }
     if (markerInfoList.value.length > 0) drawMarkers()
 })
@@ -50,11 +58,8 @@ const drawMarkers = () => {
     markerObjects.value = []
 
     markerInfoList.value.forEach((markerInfo) => {
-        if (props.type === 'update') {
-            point = new kakao.maps.LatLng(markerInfo.latitude, markerInfo.longitude)
-        } else { // create
-            point = new kakao.maps.LatLng(markerInfo.mapy, markerInfo.mapx)
-        }
+        // create
+        point = new kakao.maps.LatLng(markerInfo.mapy, markerInfo.mapx)
 
         marker = new kakao.maps.Marker({ position: point })
         if (map.value !== undefined) {
@@ -126,7 +131,7 @@ const getPlaces = () => { // 장소 검색
         ({ data }) => {
             console.log(data['response']['body']['items']['item'])
             markerInfoList.value = data['response']['body']['items']['item']
-            console.log(markers.value)
+            console.log(markerInfoList.value)
             drawMarkers()
         },
         (error) => {
@@ -178,6 +183,7 @@ const findAndSave = () => {
                     console.error("계획 상세 정보 등록 실패:", error);
                 }
             );
+            router.push({ name: 'plan-view', params: planId })
         },
         (error) => {
             console.error(error)
@@ -186,25 +192,14 @@ const findAndSave = () => {
 }
 
 const findAndModify = () => {
-    listDetailPlan(
-        planId,
-        (response) => {
-            console.log(response.data)
-            markerInfoList.value = response.data
-            selectedMarkers.value = response.data
-            console.log(markerInfoList.value)
-            drawMarkers()
-        },
-        (error) => {
-            console.error("수정 시 목록 조회 실패:", error)
-        }
-    )
+    console.log(selectedMarkers.value)
 }
 
 // router 관련
 const moveList = () => {
     router.push({ name: "group" })
 }
+
 
 </script>
 
@@ -279,17 +274,19 @@ const moveList = () => {
                                         </draggable>
                                     </div>
                                     <div v-else>
-                                        <!-- <draggable v-model="selectedMarkers" class="list-group"
+                                        <draggable v-model="selectedMarkers" class="list-group"
                                             :key="selectedMarkers.address" item-key="id">
                                             <template #item="{ element: markerInfo, index }">
                                                 <li class="list-group-item p-2">
                                                     <div class="font-bold text-lg">{{ index + 1 }} {{ markerInfo.title
                                                         }}
                                                     </div>
-                                                    <div class="text-sm text-gray-500">{{ markerInfo.address }}</div>
+                                                    <div class="text-sm text-gray-500">{{ markerInfo.address }}{{
+                                                        markerInfo.addr1 }} {{
+                                                            markerInfo.addr2 }}</div>
                                                 </li>
                                             </template>
-                                        </draggable> -->
+                                        </draggable>
                                     </div>
                                 </div>
                             </div>

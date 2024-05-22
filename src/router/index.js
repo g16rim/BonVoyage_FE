@@ -91,7 +91,7 @@ const router = createRouter({
           component: () => import("@/components/plan/PlanModify.vue"),
         },
         {
-          path: "list",
+          path: "",
           name: "plan-list",
           component: () => import("@/components/plan/PlanList.vue"),
         }

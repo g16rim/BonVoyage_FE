@@ -2,11 +2,27 @@
 import { useMemberStore } from '@/stores/member'
 import { storeToRefs } from "pinia"
 const authStore = useMemberStore()
+import { logout } from '@/api/user/user.js'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 
 // 로그인 상태 확인
 const { isLogin, isLoginError, userInfo } = storeToRefs(authStore)
 console.log("other navbar 로그인 상태: ", isLogin.value)
+
+const logoutBtn = () => {
+    console.log("logout")
+    logout(
+        (response) => {
+            if (response.status === 200) router.push({ name: 'home' })
+        },
+        (error) => {
+            console.error(error)
+        }
+    )
+}
+
 </script>
 
 <template>
@@ -48,12 +64,18 @@ console.log("other navbar 로그인 상태: ", isLogin.value)
                             <hr class="dropdown-divider" />
                         </li>
                         <li class="dropdown-li luckiest-guy-regular">
-                            <span class="dropdown-item">Logout</span>
+                            <button @click="logoutBtn" class="dropdown-item">Logout</button>
                         </li>
                     </ul>
                 </div>
             </div>
-            <a v-else href="/login" class="nav-link">로그인</a>
+            <div v-else style="display: flex; gap: 10px;">
+                <a href="/login" class="nav-link">로그인</a>
+                <a href="" class="nav-link">
+                    회원가입
+                </a>
+            </div>
+
         </div>
     </nav>
 </template>

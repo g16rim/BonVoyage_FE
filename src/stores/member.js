@@ -113,6 +113,9 @@ export const useMemberStore = defineStore("memberStore", () => {
   const userLogout = async () => {
 
     await logout(
+      {
+        refreshToken: sessionStorage.getItem("refreshToken")
+      },
       (response) => {
 
         if (response.status === httpStatusCode.OK) {
@@ -122,6 +125,7 @@ export const useMemberStore = defineStore("memberStore", () => {
 
           sessionStorage.removeItem("accessToken")
           sessionStorage.removeItem("refreshToken")
+          router.push({ name: 'home' })
         } else {
           console.log("유저 정보가 없습니다.")
         }

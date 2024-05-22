@@ -30,9 +30,16 @@ async function tokenRegeneration(user, success, fail) {
 }
 
 async function logout(success, fail) {
-  local.defaults.headers["Authorization"] = "Bearer " + sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
-  await local.post(`/auth/signout`).then((response) => {
-    console.log("findById : " , response.status);
+  // local.defaults.headers["Authorization"] = "Bearer " + sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
+  const refreshToken = {
+    refreshToken: sessionStorage.getItem("refreshToken")
+  }
+  console.log(refreshToken)
+  await local.post(`/auth/signout`, JSON.stringify(refreshToken))
+    .then((response) => {
+      console.log("로그아웃 성공" + response);
+      sessionStorage.removeItem("accessToken")
+      sessionStorage.removeItem("refreshToken")
   }).catch(fail);
 }
 
