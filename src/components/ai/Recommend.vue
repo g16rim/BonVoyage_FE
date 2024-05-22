@@ -92,7 +92,8 @@ const fetchSongs = async () => {
   <div id="recommend">
     <h1>추천 플레이리스트
     </h1>
-    <div v-if="loading" class="mx-auto mt-5 luckiest-guy-regular">Loading...
+
+    <div v-if="!loading" class="mx-auto mt-5 luckiest-guy-regular">Loading...
       <img src="/src/assets/loading.gif" class="mx-auto">
     </div>
     <div v-if="error">{{ error }}</div>

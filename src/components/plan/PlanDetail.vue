@@ -73,6 +73,10 @@ const getDetailPlans = async () => {
 
 const activeTab = ref(1)
 
+const submit = () => {
+  router.push({ name: 'ai-music-plan', params: { planId } })
+}
+
 const dayDiff = computed(() => {
   const start = new Date(plan.value.startDate)
   const end = new Date(plan.value.endDate)
@@ -101,15 +105,18 @@ const dayDiff = computed(() => {
                 </div>
               </div>
               <!-- title -->
-              <div class="flex items-start justify-between">
-                <h3 class="mb-8 text-xl font-bold" onClick="test">
+              <div class="flex items-start">
+                <h3 class="mb-8 text-xl font-bold mr-3" onClick="test">
                   <!-- 몇 박 며칠 계산 및 표시 -->
-                  {{ dayDiff === 0 ? '당일치기' : `${dayDiff}박 ${dayDiff + 1}일` }}<svg xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  {{ dayDiff === 0 ? '당일치기' : `${dayDiff}박 ${dayDiff + 1}일` }}
+                </h3>
+                <button @click="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
                       d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" />
                   </svg>
-                </h3>
+                </button>
               </div>
               <!-- tabs -->
               <div class="relative">
