@@ -11,28 +11,26 @@ const props = defineProps({
 const displayText = ref('D-');
 
 const updateDisplayText = () => {
-  const ddayDate = new Date(props.dday);
-  const today = new Date();
+  // console.log(props.dday)
+  const ddayDate = new Date(props.dday)
+  const today = new Date()
 
-  const gap = ddayDate.getTime() - today.getTime(); // 날짜 차이 계산
+  // 날짜의 시간을 0으로 설정하여 날짜만 비교
+  ddayDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
 
-  const days = String(Math.floor(gap / (1000 * 60 * 60 * 24)));
-  const hours = String(Math.floor((gap / (1000 * 60 * 60)) % 24));
-  const minutes = String(Math.floor((gap / (1000 * 60)) % 60));
-  const seconds = String(Math.floor((gap / 1000) % 60));
+  const gap = today - ddayDate; // 날짜 차이 계산
+  const days = Math.floor(gap / (1000 * 60 * 60 * 24));
 
-  if (isNaN(ddayDate.getTime())) {
-    console.error('dday must be a valid date string.');
-    return;
-  }
+  displayText.value = (gap === 0 ? 'D-Day' : gap > 0 ? `D+${days}` : `D${days}`)
 
-  if (ddayDate.getFullYear === today.getFullYear && ddayDate.getMonth === today.getMonth && ddayDate.getDay === today.getDay) {
-    displayText.value = "D-Day";
-  } else if (gap < 0) {  // 이미 지난 경우
-    displayText.value = `D+${Math.abs(days) - 1}`;
-  } else {  // 아직 남아 있는 경우
-    displayText.value = `D-${Math.abs(days) + 1} ${hours >= 10 ? hours : "0" + hours}:${minutes >= 10 ? minutes : "0" + minutes}:${seconds >= 10 ? seconds : "0" + seconds}`;
-  }
+  // if (ddayDate.getFullYear === today.getFullYear && ddayDate.getMonth === today.getMonth && ddayDate.getDay === today.getDay) {
+  //   displayText.value = "D-Day";
+  // } else if (gap < 0) {  // 이미 지난 경우
+  //   displayText.value = `D+${Math.abs(days) - 1}`;
+  // } else {  // 아직 남아 있는 경우
+  //   displayText.value = `D-${Math.abs(days) + 1} ${hours >= 10 ? hours : "0" + hours}:${minutes >= 10 ? minutes : "0" + minutes}:${seconds >= 10 ? seconds : "0" + seconds}`;
+  // }
 }
 
 onMounted(() => {
