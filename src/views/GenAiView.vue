@@ -10,7 +10,7 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="container text-center mt-5">
+    <div class="container text-center mt-5 mb-2">
         <nav aria-label="Breadcrumb">
             <div
                 class="mx-auto flex justify-between max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">

@@ -1,88 +1,89 @@
 <script setup>
+import { userInfo } from '@/api/user/user.js'
+import { ref, onMounted } from 'vue'
 
+// 날짜 형식을 변환하는 함수
+function formatDate(dateString) {
+    if (dateString.length !== 8) {
+        throw new Error("날짜 문자열의 형식이 잘못되었습니다. 'YYYYMMDD' 형식이어야 합니다.");
+    }
+    const year = dateString.substring(0, 4);
+    const month = dateString.substring(4, 6);
+    const day = dateString.substring(6, 8);
+    return `${year}-${month}-${day}`;
+}
+
+// 전화번호 형식을 변환하는 함수
+function formatPhone(phoneString) {
+    if (phoneString.length !== 11) {
+        throw new Error("전화번호 문자열의 형식이 잘못되었습니다. '01012345678' 형식이어야 합니다.");
+    }
+    const part1 = phoneString.substring(0, 3);
+    const part2 = phoneString.substring(3, 7);
+    const part3 = phoneString.substring(7, 11);
+    return `${part1}-${part2}-${part3}`;
+}
+
+const info = ref({
+    username: '',
+    email: '',
+    grade: '',
+    birth: '',
+    phone: '',
+    imageUrl: ''
+})
+
+onMounted(() => {
+    userInfo(
+        ({ data }) => {
+            console.log(data.information)
+            info.value = data.information
+            // 생년월일과 전화번호 형식 변환
+            const formattedBirth = formatDate(info.value.birth);
+            const formattedPhone = formatPhone(info.value.phone);
+            info.value = {
+                username: info.value.username,
+                email: info.value.email,
+                grade: info.value.grade,
+                birth: formattedBirth,
+                phone: formattedPhone,
+                imageUrl: info.value.imageUrl
+            };
+        },
+        (error) => {
+            console.error(error)
+        }
+    )
+})
 </script>
 
 <template>
-    <div class="bg-white">
-        <div class="pt-6">
-            <nav aria-label="Breadcrumb">
-                <ol role="list" class="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                    <li>
-                        <div class="flex items-center">
-                            <a href="#" class="mr-2 text-sm font-medium text-gray-900">MyPage</a>
-                            <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" aria-hidden="true"
-                                class="h-5 w-4 text-gray-300">
-                                <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                            </svg>
-                        </div>
-                    </li>
+    <div class="container mt-5 mb-3 mx-auto flex justify-center">
+        <!-- Image and User Info Section -->
+        <div class="mt-6 max-w-2xl sm:px-6 lg:max-w-7xl lg:px-8 lg:flex lg:items-start lg:space-x-8">
+            <!-- Image Section -->
+            <div class="flex-shrink-0">
+                <img :src="info.imageUrl" alt="userImage" class="h-48 w-48 object-cover rounded-lg">
+            </div>
 
-
-                    <!-- <li class="text-sm">
-                <a href="#" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">Basic Tee 6-Pack</a>
-                </li> -->
-                </ol>
-            </nav>
-
-            <!-- Image gallery -->
-            <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
-                <div class="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-                    <img src="/src/assets/login/roopy.jpg" alt="Two each of gray, white, and black shirts laying flat."
-                        class="h-full w-full object-cover object-center">
+            <!-- User Info Section -->
+            <div class="mt-6 lg:mt-0">
+                <div class="text-lg leading-6 font-medium space-y-1">
+                    <h3 class="text-3xl tracking-tight text-gray-900">{{ info.username }}</h3>
+                    <p class="text-indigo-600">초급 여행가</p>
                 </div>
-                <!-- Product info -->
-                <div
-                    class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:max-w-7xl  lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-
-
-                    <!-- Options -->
-                    <div class="mt-4 lg:row-span-3 lg:mt-0">
-                        <h2 class="sr-only">Product information</h2>
-                        <p class="text-3xl tracking-tight text-gray-900">루피</p>
-
-                        <!-- Reviews -->
-                        <div class="mt-6">
-                            <h3 class="sr-only">Reviews</h3>
-                            <div class="flex items-center">
-                                <div class="flex items-center">
-
-                                </div>
-                                <p>중급 여행가</p>
-
-                                <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">내가 쓴
-                                    글: 117 writings</a>
-                            </div>
-                        </div>
-
-                        <form class="mt-10">
-
-                            <div>
-                                <div class="mt-4">
-                                    <ul role="list" class="list-disc space-y-2 pl-4 text-sm">
-                                        <li class="text-gray-400"><span class="text-gray-600">생년월일 : 2000. 07. 31</span>
-                                        </li>
-                                        <li class="text-gray-400"><span class="text-gray-600">전화번호 :
-                                                010-0000-0000</span></li>
-                                        <li class="text-gray-400"><span class="text-gray-600">이메일 : ssafy@ssafy.com
-                                            </span></li>
-
-                                    </ul>
-                                </div>
-
-                            </div>
-
-                            <button type="submit"
-                                class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">내
-                                정보 수정하기</button>
-                        </form>
-                    </div>
-                </div>
-
-
-
+                <ul role="list" class="mt-2 list-disc space-y-2 pl-4 text-sm">
+                    <li class="text-gray-400"><span class="text-gray-600">생년월일: {{ info.birth }}</span></li>
+                    <li class="text-gray-400"><span class="text-gray-600">전화번호: {{ info.phone }}</span></li>
+                    <li class="text-gray-400"><span class="text-gray-600">이메일: {{ info.email }}</span></li>
+                </ul>
+                <button type="submit"
+                    class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-green-600 px-8 py-3 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">내
+                    정보 수정하기</button>
             </div>
         </div>
     </div>
 </template>
+
 
 <style scoped></style>

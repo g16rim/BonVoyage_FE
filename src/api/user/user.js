@@ -46,4 +46,9 @@ async function signup(signupUser, success, fail) {
     .then(success).catch(fail)
 }
 
-export { userConfirm, findById, tokenRegeneration, logout, signup };
+async function userInfo(success, fail) {
+  local.defaults.headers["Authorization"] = "Bearer " + sessionStorage.getItem("accessToken")
+  await local.get(`/auth/`).then(success).catch(fail)
+}
+
+export { userConfirm, findById, tokenRegeneration, logout, signup, userInfo };
