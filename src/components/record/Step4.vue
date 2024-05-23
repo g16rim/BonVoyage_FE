@@ -1,13 +1,15 @@
 <template>
   <div>
     <hr />
-    <div class="image-selection">
-      <h3>직접 찍은 사진들을 기록해보세요.</h3>
-      <div class="custom-image">
-        <h5>직접 파일 선택</h5>
-        <input type="file" id="file-input" @change="handleFileChange" />
+    <div class="centered">
+      <div class="image-selection">
+        <h3>직접 찍은 사진들을 기록해보세요.</h3>
+        <div class="custom-image">
+          <h5>직접 파일 선택</h5>
+          <input type="file" id="file-input" @change="handleFileChange" />
+        </div>
       </div>
-    </div>
+  </div>
   </div>
 </template>
 
@@ -31,6 +33,12 @@ const selectPredefinedImage = (image) => {
 </script>
 
 <style scoped>
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .image-selection {
   display: flex;
   flex-direction: column;

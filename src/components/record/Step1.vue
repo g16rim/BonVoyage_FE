@@ -7,25 +7,28 @@
           <div class="min-w-0 flex-auto">
             <p class="text-sm font-semibold leading-6 text-gray-900">{{ team.name }}</p>
             <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ team.description }}</p>
-            <button @click="selectGroup(team.name)"
+            <button @click="selectGroup(team.id)"
               class="px-8 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg">
               그룹 선택
             </button>
           </div>
         </div>
+        <div class="flex items-center">
+          <span v-if="selectedGroupId === team.id" class="text-green-800 font-bold">✔</span>
+        </div>
       </li>
     </ul>
+    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted,onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 const props = defineProps({
   teams: Array
 });
-
 
 const teams = ref([]);
 
@@ -51,15 +54,34 @@ const fetchMembers = async () => {
   }
 };
 
+const errorMessage = ref('');
+const selectedGroupId = ref(null);
+
+const updateGroupName = () => {
+  if (!selectedGroupId.value) {
+    errorMessage.value = '그룹 선택은 필수입니다';
+    emits('validation', false);
+  } else {
+    errorMessage.value = '';
+    emits('update:travelGroupId', selectedGroupId.value);
+    emits('validation', true);
+  }
+};
+
 onMounted(() => {
   fetchMembers();
-
 });
 
+const emits = defineEmits(['update:travelGroupId']);
 
-const emits = defineEmits(['update:groupName']);
-
-const selectGroup = (name) => {
-  emits('update:groupName', name);
+const selectGroup = (id) => {
+  selectedGroupId.value = id;
+  emits('update:travelGroupId', id);
 };
 </script>
+
+<style>
+.error {
+  color: red;
+}
+</style>

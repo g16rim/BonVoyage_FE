@@ -14,8 +14,8 @@ console.log("other navbar 로그인 상태: ", isLogin.value)
 const logoutBtn = () => {
     console.log("logout")
     logout(
-        (response) => {
-            if (response.status === 200) router.push({ name: 'home' })
+        () => {
+            router.push({ name: 'home' })
         },
         (error) => {
             console.error(error)

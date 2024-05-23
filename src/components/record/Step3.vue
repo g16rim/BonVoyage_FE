@@ -1,52 +1,25 @@
 <template>
   <div>
     <hr/>
-      <textarea v-model="localGroupDescription" @input="updateGroupDescription" placeholder="여행 소감을 입력하세요"></textarea>
-    
+    <textarea v-model="localGroupDescription" @input="updateGroupDescription" placeholder="여행 소감을 입력해보세요!"></textarea>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-
+ import {ref, watch} from "vue"
 const props = defineProps({
-  groupConcept: String
+  groupDescription: String
 });
-const emits = defineEmits(['update:groupConcept']);
+const emits = defineEmits(['update:comment']);
 
-const preferences = [
-  '자연', '도시', '문화체험', '휴양', '음식탐방', '하이킹', '자전거타기', 
-  '쇼핑', '캠핑', '럭셔리', '가성비', '커플여행', '혼자여행', '친구와여행', '가족여행'
-];
+const localGroupDescription = ref(props.groupDescription);
 
-const localGroupConcept = ref(props.groupConcept);
-
-watch(() => props.groupConcept, (newVal) => {
-  localGroupConcept.value = newVal;
+watch(() => props.groupDescription, (newVal) => {
+  localGroupDescription.value = newVal;
 });
 
-const selectGroupConcept = (option) => {
-  localGroupConcept.value = option;
-  emits('update:groupConcept', localGroupConcept.value);
+const updateGroupDescription = () => {
+  emits('update:comment', localGroupDescription.value);
+  console.log("comment ", localGroupDescription.value)
 };
 </script>
-
-<style scoped>
-.preferences {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-}
-
-button {
-  padding: 10px;
-  border: 1px solid black;
-  background-color: white;
-  cursor: pointer;
-}
-
-button.selected {
-  background-color: lightblue;
-  border-color: blue;
-}
-</style>

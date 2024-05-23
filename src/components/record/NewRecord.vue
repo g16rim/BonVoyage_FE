@@ -5,23 +5,23 @@ import Step1 from './Step1.vue';
 import Step2 from './Step2.vue';
 import Step3 from './Step3.vue';
 import Step4 from './Step4.vue';
-import Step5 from './Step5.vue';
+// import Step5 from './Step5.vue';
 
 const { VITE_BASE_URL } = import.meta.env
 const isModalOpen = ref(false);
 const currentPage = ref(0);
 const selectedFile = ref(null);
-
-const groupName = ref('');
-const groupDescription = ref('');
-const groupConcept = ref('');
+const accessToken = sessionStorage.getItem('accessToken'); // 로컬 스토리지에서 accessToken을 가져옴
+const comment = ref('');
+const travelGroupId = ref('');
+const travelPlanId = ref('');
 
 const pages = [
   { title: 'Step1. 그룹 선택', component: Step1 },
   { title: 'Step2. 기록할 여행 계획 선택', component: Step2 },
   { title: 'Step3. 소감 쓰기', component: Step3 },
   { title: 'Step4. 이미지 추가하기', component: Step4 },
-  { title: 'Step5. 지도 간 곳', component: Step5 },
+  // { title: 'Step5. 지도 간 곳', component: Step5 },
 ];
 
 const toggleModal = () => {
@@ -53,33 +53,37 @@ const handleFileChange = (event) => {
 
 const submitGroup = async () => {
   const request = {
-    name: groupName.value,
-    description: groupDescription.value,
-    preference: groupConcept.value
+    comment: comment.value,
+    travelGroupId: travelGroupId.value,
+    travelPlanId: travelPlanId.value
   };
   const formData = new FormData();
   formData.append('request', new Blob([JSON.stringify(request)], { type: 'application/json' }));
 
-  if (selectedFile.value) {
-    formData.append('file', selectedFile.value);
-  }
+  // if (selectedFile.value) {
+  //   formData.append('file', selectedFile.value);
+  // }
 
 
   try {
     console.log("accessToken = ", accessToken)
-    const response = await axios.post(VITE_BASE_URL + '/teams', formData, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-    if (response.status === 201) {
-      alert('그룹이 성공적으로 생성되었습니다.');
-      toggleModal();
-    }
-  } catch (error) {
-    console.error('그룹 생성 중 오류 발생:', error);
-    alert('그룹 생성에 실패했습니다.');
+    console.log("request = ", request)
+    const response = await axios
+      .post(VITE_BASE_URL + '/record',
+        JSON.stringify(request),
+        {
+          headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+          }
+        });
+        if (response.status === 201) {
+          alert('여행 기록이 성공적으로 생성되었습니다.');
+          toggleModal();
+        }
+      } catch (error) {
+        console.error('여행 기록 생성 중 오류 발생:', error);
+        alert('여행 기록 생성에 실패했습니다.');
   }
 };
 
@@ -193,12 +197,12 @@ const submitGroup = async () => {
     <div class="modal-content" @click.stop>
       <h2>{{ pages[currentPage].title }}</h2>
       <component :is="pages[currentPage].component"
-        v-bind:groupName="groupName"
-        v-bind:groupDescription="groupDescription"
-        v-bind:groupConcept="groupConcept"
-        @update:groupName="groupName = $event"
-        @update:groupDescription="groupDescription = $event"
-        @update:groupConcept="groupConcept = $event"
+        v-bind:comment="comment"
+        v-bind:travelGroupId="travelGroupId"
+        v-bind:travelPlanId="travelPlanId"
+        @update:comment="comment = $event"
+        @update:travelGroupId="travelGroupId = $event"
+        @update:travelPlanId="travelPlanId = $event"
         @update:file="handleFileChange"
       />
       <div class="modal-navigation">
@@ -593,4 +597,6 @@ h2{
 .bubbles-small circle {
   fill: #ffcc00; /* 버블의 작은 원의 색상 변경 */
 }
+
+
 </style>
