@@ -2,9 +2,11 @@
 import 'tailwindcss/tailwind.css';
 import { useSidebarStore } from '@/stores/sidebar.js';
 import { useMemberStore } from '@/stores/member.js'
+import { useRouter } from 'vue-router'
 
 const sidebarStore = useSidebarStore();
 const memberStore = useMemberStore()
+const router = useRouter()
 
 const toggleSidebar = () => {
     sidebarStore.toggle();
@@ -14,6 +16,7 @@ const logout = () => {
     console.log("로그아웃")
     memberStore.userLogout()
     sidebarStore.toggle()
+    router.replace("/")
 }
 </script>
 
