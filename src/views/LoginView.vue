@@ -75,7 +75,8 @@ const login = async () => {
                                 <button @click="login" type="submit" data-mdb-button-init data-mdb-ripple-init
                                     class="btn btn-primary btn-lg btn-block"
                                     style="background-color: #32a852;">Login</button>
-                                <!-- 
+
+                                <!-- oauth
                                 <hr class="my-4">
 
                                 <button data-mdb-button-init data-mdb-ripple-init
