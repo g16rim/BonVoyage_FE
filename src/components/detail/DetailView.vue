@@ -43,7 +43,7 @@ const getDetailPlans = async () => {
         planId,
         ({ data }) => {
             plans.value = data
-            console.log(plans)
+            console.log("DetailView:", plans)
             getMarkerList()
         },
         (error) => {
@@ -78,32 +78,10 @@ watch(plans, (newPlans) => {
 </script>
 
 <template>
-    <!-- <div id="container">
-        <div class="row">
-            <div class="col-md-6"> -->
     <KakaoMap :lat="37.5030960206" :lng="127.038175715" @onLoadKakaoMap="onLoadKakaoMap"
         style="width: 100%; height: 100%;">
         <KakaoMapMarkerPolyline :markerList="markerList" :showMarkerOrder="true" />
     </KakaoMap>
-    <!-- </div>
-            <div class="col-md-6">
-                <div class="card" style="height: 30rem; width: 40rem; overflow-y: scroll;">
-                    <div v-for="plan in plans" :key="plan.planOrder" class="row g-0">
-                        <div class="col-md-4">
-                            <img v-if="plan.image" :src="plan.image" class="img-fluid rounded-start" alt="...">
-                            <img v-else src="/src/assets/no-image.png" class="img-fluid rounded-start" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ plan.planOrder }} {{ plan.title }}</h5>
-                                <p class="card-text"><small class="text-muted">{{ plan.address }}</small></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </template>
 
 <style scoped></style>

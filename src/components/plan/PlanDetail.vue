@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getPlan, deletePlan } from '@/api/plan.js'
 import { listDetailPlan } from '@/api/site.js'
@@ -20,6 +20,12 @@ onMounted(() => {
   showPlan()
   getDetailPlans()
 })
+
+// planId 변화 감시
+// watch(() => route.params.planId, (newPlanId) => {
+//   showPlan(newPlanId)
+//   getDetailPlans(newPlanId)
+// }, { immediate: true })
 
 const showPlan = () => {
   getPlan(
