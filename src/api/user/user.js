@@ -6,8 +6,6 @@ async function userConfirm(param, success, fail) {
   await local.post(`/auth/signin`, param).then(success).catch(fail);
 }
 
-
-
 async function findById(success, fail) {
   // console.log()
   local.defaults.headers["Authorization"] = "Bearer " + sessionStorage.getItem("accessToken");
@@ -22,7 +20,6 @@ async function findById(success, fail) {
     return fail;
   });
 }
-
 
 async function tokenRegeneration(user, success, fail) {
   local.defaults.headers["Authorization"] =  "Bearer " + sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
@@ -43,4 +40,10 @@ async function logout(success, fail) {
   }).catch(fail);
 }
 
-export { userConfirm, findById, tokenRegeneration, logout };
+async function signup(signupUser, success, fail) {
+  await local.post(`/auth/signup`,
+    JSON.stringify(signupUser))
+    .then(success).catch(fail)
+}
+
+export { userConfirm, findById, tokenRegeneration, logout, signup };

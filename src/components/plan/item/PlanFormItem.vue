@@ -54,7 +54,7 @@ function registPlan() {
       console.log(planId.value)
       moveDetail()
     },
-    (error) => console.log(error)
+    (error) => console.error(error)
   )
 }
 
