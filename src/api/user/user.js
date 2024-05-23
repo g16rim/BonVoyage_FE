@@ -41,10 +41,25 @@ async function logout(success, fail) {
 }
 
 async function signup(signupUser, success, fail) {
-  await local.post(`/auth/signup`,
-    JSON.stringify(signupUser))
-    .then(success).catch(fail)
+  await local.post(`/auth/signup`, signupUser, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(success).catch(fail)
 }
+// async function signup(signupUser, file, success, fail) {
+//   const formData = new FormData();
+//   formData.append("signUpRequest", new Blob([JSON.stringify(signupUser)], { type: "application/json" }));
+//   if (file) {
+//       formData.append("file", file);
+//   }
+
+//   await local.post(`/auth/signup`, formData, {
+//       headers: {
+//           "Content-Type": "multipart/form-data"
+//       }
+//   }).then(success).catch(fail);
+// }
 
 async function userInfo(success, fail) {
   local.defaults.headers["Authorization"] = "Bearer " + sessionStorage.getItem("accessToken")

@@ -4,7 +4,6 @@ import { useMemberStore } from '@/stores/member'
 import { storeToRefs } from "pinia"
 import { useRouter } from "vue-router"
 import { signup } from '@/api/user/user.js'
-import Datepicker from 'vuejs3-datepicker'
 
 const authStore = useMemberStore()
 const router = useRouter()
@@ -15,9 +14,9 @@ const signupUser = ref({
   email: "",
   password: "",
   birth: "",
-  phone: "",
-  profileImage: null // 프로필 이미지 파일 객체
+  phone: ""
 })
+const selectedFile = ref(null)
 
 // 유효성 검사 메시지 저장 객체
 const validationMessages = ref({
@@ -33,20 +32,22 @@ const validationMessages = ref({
 const checkDuplicateEmail = async () => {
   // 이메일 중복 확인 로직을 구현해야 합니다.
   // 예시로, 중복 확인 결과를 true로 설정합니다.
-  const isDuplicate = false; // 중복 확인 결과
-  if (isDuplicate) {
-    validationMessages.value.email = "이미 사용 중인 이메일입니다.";
-  } else {
-    validationMessages.value.email = "사용 가능한 이메일입니다.";
-  }
+  // const isDuplicate = false; // 중복 확인 결과
+  // if (isDuplicate) {
+  //   validationMessages.value.email = "이미 사용 중인 이메일입니다.";
+  // } else {
+  //   validationMessages.value.email = "사용 가능한 이메일입니다.";
+  // }
+  validationMessages.value.email = "사용 가능한 이메일입니다.";
 }
 
 // 프로필 이미지 업로드 핸들러
 const handleProfileImageUpload = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    signupUser.value.profileImage = file;
-  }
+  // const file = event.target.files[0];
+  // if (file) {
+  //   signupUser.value.profileImage = file;
+  // }
+  selectedFile.value = event.target.files[0]
 }
 
 // 입력값 검증 함수
@@ -63,11 +64,13 @@ const validateInput = () => {
   if (!signupUser.value.email) {
     validationMessages.value.email = "이메일을 입력해주세요.";
     isValid = false;
-  } else if (validationMessages.value.email !== "사용 가능한 이메일입니다.") {
-    validationMessages.value.email = "이미 가입된 이메일입니다.";
-    isValid = false;
-  } else {
-    validationMessages.value.email = "";
+  }
+  // else if (validationMessages.value.email !== "사용 가능한 이메일입니다.") {
+  //   validationMessages.value.email = "이미 가입된 이메일입니다.";
+  //   isValid = false;
+  // }
+  else {
+    validationMessages.value.email = "사용 가능한 이메일입니다.";
   }
 
   if (!signupUser.value.password || signupUser.value.password.length < 8) {
@@ -101,8 +104,14 @@ const moveSignup = async () => {
   }
   // 이 부분에서 회원 가입 로직을 구현해야 합니다.
   // 이메일, 비밀번호, 이름 등을 서버로 전송하고 회원 가입 처리를 해야 합니다.
+  const formData = new FormData()
+  formData.append('signUpRequest', new Blob([JSON.stringify(signupUser.value)], { type: 'application/json' }))
+  if (selectedFile.value) {
+    formData.append('file', selectedFile.value)
+  }
+
   await signup(
-    signupUser.value,
+    formData,
     (response) => {
       console.log("회원가입 성공", response)
       router.push({ name: 'login' })
